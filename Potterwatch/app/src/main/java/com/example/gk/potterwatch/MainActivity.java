@@ -13,13 +13,10 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -157,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
 
             if (userExistence) {
-                Intent i = new Intent(MainActivity.this, Quizzitch.class);
+                Intent i = new Intent(MainActivity.this, ColorPicker.class);
                 startActivity(i);
             } else {
                 // TODO: If the user is not existing and signing for the first time.

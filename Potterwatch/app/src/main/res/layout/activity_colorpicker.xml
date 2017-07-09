@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="32dp"
+    android:gravity="center_horizontal"
+    android:textAlignment="center"
+    tools:context="com.example.gk.potterwatch.ColorPicker">
+
+    <TextView
+        android:id="@+id/question"
+        android:padding="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Which trait do you value the most?"/>
+
+    <RadioGroup
+        android:id="@+id/radioHouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <RadioButton
+            android:id="@+id/GHouse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:text="Bravery" />
+
+        <RadioButton
+            android:id="@+id/HHouse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:text="Loyalty" />
+
+        <RadioButton
+            android:id="@+id/RHouse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Wisdom" />
+
+        <RadioButton
+            android:id="@+id/SHouse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:text="Cunning" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+
+
+</LinearLayout>

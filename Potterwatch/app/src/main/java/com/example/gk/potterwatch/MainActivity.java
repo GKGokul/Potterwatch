@@ -1,6 +1,7 @@
 package com.example.gk.potterwatch;
 
 import android.content.Intent;
+import android.hardware.camera2.params.Face;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,14 +9,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import okhttp3.MediaType;
@@ -39,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     LoginButton FacebookLoginButton;
     CallbackManager callbackManager;
 
+    private String facebookName,email,gender,profilePictureid;
+
     public boolean getUserExistence() {
         return userExistence;
     }
@@ -60,15 +69,48 @@ public class MainActivity extends AppCompatActivity {
         final Button buttonSignUp = (Button) findViewById(R.id.signUp);
 
         FacebookLoginButton = (LoginButton) findViewById(R.id.login_button);
+        FacebookLoginButton.setReadPermissions("email");
         callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().logOut();
+
+
         FacebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
                 accessToken = loginResult.getAccessToken().getToken();
-                Log.e(TAG, accessToken + '\n');
-                Log.e(TAG, loginResult.getAccessToken().getUserId() + '\n');
-                new feedTask().execute();
+
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.e("MAIN", response.toString());
+
+                                try {
+
+                                    email = object.getString("email");
+                                    gender = object.getString("gender");
+                                    facebookName = object.getString("name");
+                                    profilePictureid = object.getString("id");
+                                    Log.e("CHECKKKK: ", email + " " + gender + " " + facebookName + " " + profilePictureid);
+                                    new feedTask().execute();
+
+
+                                }
+                            catch (JSONException error){
+                                error.printStackTrace();
+                            }
+                            }
+                        });
+
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+
 
             }
 
@@ -79,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
-
+                Toast.makeText(MainActivity.this, "Errod to LOGIN FACEBOOK ", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -123,6 +165,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    protected void getUserDetails(LoginResult loginResult){
+        GraphRequest dataRequest = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+
+                    }
+                }
+        );
+    }
+
+
     // This is the class to perform the post request to the server
     public class feedTask extends AsyncTask<String, Void, String> {
         @Override
@@ -134,12 +189,20 @@ public class MainActivity extends AppCompatActivity {
 
                 JSONObject postdata = new JSONObject();
                 postdata.put("auth_token", accessToken);
+                postdata.put("id",profilePictureid);
+                postdata.put("name",facebookName);
+                postdata.put("email",email);
+                postdata.put("gender",gender);
 
-                RequestBody JSONdata = RequestBody.create(JSON, postdata.toString());
+                String stringData = postdata.toString();
+
+                Log.e("HELLLLLLOOOOOO:",stringData);
+                RequestBody JSONdata = RequestBody.create(JSON, stringData);
 
                 Request request = new Request.Builder().url("http:192.168.43.232:8080/fbconnect").post(JSONdata).build();
                 Response response = client.newCall(request).execute();
 
+                Log.e("TEST",request.toString());
                 String result = response.body().string();
                 Log.e(TAG, "RESULT: " + result);
                 return result;
@@ -166,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
         }
-
 
     }
 

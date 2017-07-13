@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(MainActivity.this, "Errod to LOGIN FACEBOOK ", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Error to LOGIN FACEBOOK ", Toast.LENGTH_LONG).show();
             }
         });
 

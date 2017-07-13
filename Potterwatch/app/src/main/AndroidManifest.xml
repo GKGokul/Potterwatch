@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.example.gk.potterwatch">
+    package="com.example.gk.potterwatch">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -39,7 +39,8 @@
         </activity>
         <activity android:name=".SortingHat" />
         <activity android:name=".SignUp" />
-        <activity android:name=".ColorPicker"></activity>
+        <activity android:name=".ColorPicker" />
+        <activity android:name=".TestActivity" />
     </application>
 
 </manifest>

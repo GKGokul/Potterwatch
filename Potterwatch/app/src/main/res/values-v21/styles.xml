@@ -1,17 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="hogwarts" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="Theme.Hufflepuff" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">@color/HufflepuffPrimary</item>
+        <item name="colorPrimaryDark">@color/HufflepuffPrimary</item>
+        <item name="colorPrimary">@color/HufflepuffSecondary</item>
+        <item name="colorAccent">@color/HufflepuffSecondary</item>
+        <item name="android:statusBarColor">@color/HufflepuffSecondary</item>
+        <item name="android:colorBackground">@color/HufflepuffPrimary</item>
     </style>
 
     <style name="Theme.Gryffindor" parent="Theme.AppCompat.NoActionBar">
@@ -20,15 +16,9 @@
         <item name="colorPrimaryDark">@color/GryffindorPrimary</item>
         <item name="colorAccent">@color/GryffindorSecondary</item>
         <item name="android:colorBackground">@color/GryffindorPrimary</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
         <item name="colorPrimary">@color/GryffindorSecondary</item>
-    </style>
-
-    <style name="Theme.Hufflepuff" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:background">@color/HufflepuffPrimary</item>
-        <item name="colorPrimaryDark">@color/HufflepuffPrimary</item>
-        <item name="colorPrimary">@color/HufflepuffSecondary</item>
-        <item name="colorAccent">@color/HufflepuffSecondary</item>
-        <item name="android:colorBackground">@color/HufflepuffPrimary</item>
+        <item name="android:statusBarColor">@color/GryffindorSecondary</item>
     </style>
 
     <style name="Theme.Ravenclaw" parent="Theme.AppCompat.NoActionBar">
@@ -37,6 +27,7 @@
         <item name="colorPrimary">@color/RavenclawSecondary</item>
         <item name="android:colorBackground">@color/RavenclawPrimary</item>
         <item name="colorAccent">@color/RavenclawSecondary</item>
+        <item name="android:statusBarColor">@color/RavenclawSecondary</item>
         <item name="android:colorForeground">@color/RavenclawSecondary</item>
     </style>
 
@@ -47,10 +38,6 @@
         <item name="colorPrimary">@color/SlytherinSecondary</item>
         <item name="android:colorBackground">@color/SlytherinPrimary</item>
         <item name="android:colorForeground">@color/SlytherinSecondary</item>
+        <item name="android:statusBarColor">@color/SlytherinSecondary</item>
     </style>
-
-    <style name="hogwarts.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="hogwarts.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 </resources>

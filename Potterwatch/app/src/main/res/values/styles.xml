@@ -14,6 +14,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <!--House themes -->
     <style name="Theme.Gryffindor" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/GryffindorPrimary</item>
         <item name="android:background">@color/GryffindorPrimary</item>
@@ -21,6 +23,8 @@
         <item name="colorAccent">@color/GryffindorSecondary</item>
         <item name="android:colorBackground">@color/GryffindorPrimary</item>
         <item name="colorPrimary">@color/GryffindorSecondary</item>
+        <item name="android:buttonStyle">@style/GryffindorButton</item>
+        <item name="android:colorForeground">@color/GryffindorSecondary</item>
     </style>
 
     <style name="Theme.Hufflepuff" parent="Theme.AppCompat.NoActionBar">
@@ -29,6 +33,7 @@
         <item name="colorPrimary">@color/HufflepuffSecondary</item>
         <item name="colorAccent">@color/HufflepuffSecondary</item>
         <item name="android:colorBackground">@color/HufflepuffPrimary</item>
+        <item name="android:buttonStyle">@style/HufflepuffButton</item>
     </style>
 
     <style name="Theme.Ravenclaw" parent="Theme.AppCompat.NoActionBar">
@@ -38,6 +43,7 @@
         <item name="android:colorBackground">@color/RavenclawPrimary</item>
         <item name="colorAccent">@color/RavenclawSecondary</item>
         <item name="android:colorForeground">@color/RavenclawSecondary</item>
+        <item name="android:buttonStyle">@style/RavenclawButton</item>
     </style>
 
     <style name="Theme.Slytherin" parent="Theme.AppCompat.NoActionBar">
@@ -47,6 +53,47 @@
         <item name="colorPrimary">@color/SlytherinSecondary</item>
         <item name="android:colorBackground">@color/SlytherinPrimary</item>
         <item name="android:colorForeground">@color/SlytherinSecondary</item>
+        <item name="android:buttonStyle">@style/SlytherinButton</item>
+    </style>
+
+    <style name="GryffindorButton" parent="android:Widget.Button">
+        <item name="android:background">@color/GryffindorSecondary</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">32dp</item>
+        <item name="android:bottomRightRadius">5dp</item>
+        <item name="android:topRightRadius">5dp</item>
+        <item name="android:topLeftRadius">5dp</item>
+        <item name="android:bottomLeftRadius">5dp</item>
+    </style>
+
+    <style name="HufflepuffButton" parent="android:Widget.Button">
+        <item name="android:background">@color/HufflepuffSecondary</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">32dp</item>
+    </style>
+
+    <style name="RavenclawButton" parent="android:Widget.Button">
+        <item name="android:background">@color/RavenclawSecondary</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">32dp</item>
+        <item name="android:bottomRightRadius">5dp</item>
+        <item name="android:topRightRadius">5dp</item>
+        <item name="android:topLeftRadius">5dp</item>
+        <item name="android:bottomLeftRadius">5dp</item>
+    </style>
+
+    <style name="SlytherinButton" parent="android:Widget.Button">
+        <item name="android:background">@color/SlytherinSecondary</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">32dp</item>
+        <item name="android:bottomRightRadius">5dp</item>
+        <item name="android:topRightRadius">5dp</item>
+        <item name="android:topLeftRadius">5dp</item>
+        <item name="android:bottomLeftRadius">5dp</item>
     </style>
 
     <style name="hogwarts.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

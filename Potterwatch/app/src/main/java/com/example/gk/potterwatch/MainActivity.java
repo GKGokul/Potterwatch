@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -52,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
         return userExistence;
     }
 
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -63,6 +69,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
+        if(isLoggedIn()) {
+            Intent i = new Intent(MainActivity.this, ColorPicker.class);
+            startActivity(i);
+            finish();
+        }
 
         //Creating both the buttons
         final Button buttonAlohomora = (Button) findViewById(R.id.alohomora);
@@ -219,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
             if (userExistence) {
                 Intent i = new Intent(MainActivity.this, ColorPicker.class);
                 startActivity(i);
+                finish();
             } else {
                 // TODO: If the user is not existing and signing for the first time.
             }

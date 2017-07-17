@@ -41,6 +41,7 @@
         <activity android:name=".SignUp" />
         <activity android:name=".ColorPicker" />
         <activity android:name=".TestActivity" />
+        <activity android:name=".Question"></activity>
     </application>
 
 </manifest>

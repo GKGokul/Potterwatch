@@ -3,8 +3,12 @@ package com.example.gk.potterwatch;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class TestActivity extends AppCompatActivity {
+
+    String trait = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -12,7 +16,7 @@ public class TestActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null) {
-            String trait = extras.getString("KEY");
+            trait = extras.getString("KEY");
             switch(trait) {
                 case "Bravery":     setTheme(R.style.Theme_Gryffindor);
                     break;
@@ -27,7 +31,17 @@ public class TestActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_test2);
 
+        final Button pvp = (Button) findViewById(R.id.pvpbutton);
+        final Button lan = (Button) findViewById(R.id.lanparty);
 
+        pvp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TestActivity.this, Question.class);
+                intent.putExtra("KEY",trait);
+                startActivity(intent);
+            }
+        });
 
     }
 }

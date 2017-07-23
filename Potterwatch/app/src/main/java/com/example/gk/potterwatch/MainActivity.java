@@ -1,7 +1,6 @@
 package com.example.gk.potterwatch;
 
 import android.content.Intent;
-import android.hardware.camera2.params.Face;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -25,6 +23,8 @@ import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     // To check whether is already existing or not. This is to ensure which page to open. Sorting Hat or Muggle? SignUp
     private boolean userExistence = true;
+
     // Variable for Alohomora
     private String enterEmail;
     private String enterPassword;
@@ -47,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
     LoginButton FacebookLoginButton;
     CallbackManager callbackManager;
 
-    private String facebookName,email,gender,profilePictureid;
+    private String facebookName, email, gender, profilePictureid;
 
+    // TODO: To check if the user is already existing. This would be useful for Sorting Hat.
     public boolean getUserExistence() {
         return userExistence;
     }
@@ -70,13 +72,13 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
-        if(isLoggedIn()) {
+        if (isLoggedIn()) {
             Intent i = new Intent(MainActivity.this, ColorPicker.class);
             startActivity(i);
             finish();
         }
 
-        //Creating both the buttons
+        //Creating the ALOHOMORA and Muggle? Sign up here button
         final Button buttonAlohomora = (Button) findViewById(R.id.alohomora);
         final Button buttonSignUp = (Button) findViewById(R.id.signUp);
 
@@ -108,11 +110,9 @@ public class MainActivity extends AppCompatActivity {
                                     Log.e("CHECKKKK: ", email + " " + gender + " " + facebookName + " " + profilePictureid);
                                     new feedTask().execute();
 
-
+                                } catch (JSONException error) {
+                                    error.printStackTrace();
                                 }
-                            catch (JSONException error){
-                                error.printStackTrace();
-                            }
                             }
                         });
 
@@ -122,13 +122,10 @@ public class MainActivity extends AppCompatActivity {
                 request.setParameters(parameters);
                 request.executeAsync();
 
-
-
             }
 
             @Override
             public void onCancel() {
-
             }
 
             @Override
@@ -177,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    protected void getUserDetails(LoginResult loginResult){
+    protected void getUserDetails(LoginResult loginResult) {
         GraphRequest dataRequest = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -190,31 +187,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // This is the class to perform the post request to the server
-    public class feedTask extends AsyncTask<String, Void, String> {
+    // Class to perform the post request to the server
+    private class feedTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             try {
                 JSON = MediaType.parse("application/json; charset=utf-8");
 
-                OkHttpClient client = new OkHttpClient();
 
+                OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).build();
                 JSONObject postdata = new JSONObject();
                 postdata.put("auth_token", accessToken);
-                postdata.put("id",profilePictureid);
-                postdata.put("name",facebookName);
-                postdata.put("email",email);
-                postdata.put("gender",gender);
+                postdata.put("id", profilePictureid);
+                postdata.put("name", facebookName);
+                postdata.put("email", email);
+                postdata.put("gender", gender);
 
                 String stringData = postdata.toString();
-
-                Log.e("HELLLLLLOOOOOO:",stringData);
                 RequestBody JSONdata = RequestBody.create(JSON, stringData);
-
                 Request request = new Request.Builder().url("http:192.168.43.232:8080/fbconnect").post(JSONdata).build();
                 Response response = client.newCall(request).execute();
 
-                Log.e("TEST",request.toString());
+                Log.e("TEST", request.toString());
                 String result = response.body().string();
                 Log.e(TAG, "RESULT: " + result);
                 return result;
@@ -227,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
             if (userExistence) {
                 Intent i = new Intent(MainActivity.this, ColorPicker.class);
                 startActivity(i);
@@ -236,11 +229,6 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: If the user is not existing and signing for the first time.
             }
 
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
         }
 
     }

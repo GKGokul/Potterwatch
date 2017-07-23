@@ -41,10 +41,10 @@ public class ColorPicker extends AppCompatActivity {
 
                 String trait = RadioHouseButton.getText().toString();
 
-                Toast.makeText(ColorPicker.this,RadioHouseButton.getText(),Toast.LENGTH_LONG).show();
+                Toast.makeText(ColorPicker.this, RadioHouseButton.getText(), Toast.LENGTH_LONG).show();
 
                 Intent test = new Intent(ColorPicker.this, TestActivity.class);
-                test.putExtra("KEY",trait);
+                test.putExtra("KEY", trait);
                 startActivity(test);
 
             }

@@ -3,6 +3,7 @@ package com.example.gk.potterwatch;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,12 +29,13 @@ import okhttp3.Response;
 
 public class Question extends TestActivity {
 
+    Counter count;
     public int QuestionCounter = 0;
     public int score = 0;
     public String AnswerKey;
 
     public String jsonResult;
-    private TextView QuestionView;
+    private TextView QuestionView,Timer;
     private Button One, Two, Three, Four;
 
     List<QuestionData> Object = new ArrayList<>();
@@ -70,6 +72,7 @@ public class Question extends TestActivity {
         Three = (Button) findViewById(R.id.Option3);
         Four = (Button) findViewById(R.id.Option4);
 
+        Timer = (TextView) findViewById(R.id.timer);
         if (QuestionCounter == 0) {
             new getQuestions().execute();
         }
@@ -78,6 +81,8 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
+
+                count.cancel();
                 if (AnswerKey.equals("OptionA")) {
                     Toast.makeText(Question.this, "Correct Answer", Toast.LENGTH_SHORT).show();
                     score += 10;
@@ -100,6 +105,8 @@ public class Question extends TestActivity {
         Two.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                count.cancel();
                 if (AnswerKey.equals("OptionB")) {
                     Toast.makeText(Question.this, "Correct Answer", Toast.LENGTH_SHORT).show();
                     score += 10;
@@ -124,6 +131,7 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
+                count.cancel();
                 if (AnswerKey.equals("OptionC")) {
                     Toast.makeText(Question.this, "Correct Answer", Toast.LENGTH_SHORT).show();
                     score += 10;
@@ -149,6 +157,7 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
+                count.cancel();
                 if (AnswerKey.equals("OptionD")) {
                     Toast.makeText(Question.this, "Correct Answer", Toast.LENGTH_SHORT).show();
                     score += 10;
@@ -170,6 +179,8 @@ public class Question extends TestActivity {
             }
         });
 
+
+
     }
 
     private class getQuestions extends AsyncTask<String, String, String> {
@@ -179,6 +190,7 @@ public class Question extends TestActivity {
             try {
                 extractDataFromJSON();
                 updateUI();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -210,7 +222,8 @@ public class Question extends TestActivity {
         Three.setText(temp.getOption3());
         Four.setText(temp.getOption4());
         QuestionCounter++;
-
+        count = new Counter(11000,100);
+        count.start();
     }
 
 
@@ -232,5 +245,28 @@ public class Question extends TestActivity {
         }
     }
 
+    public class Counter extends CountDownTimer{
+
+        /**
+         * @param millisInFuture    The number of millis in the future from the call
+         *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
+         *                          is called.
+         * @param countDownInterval The interval along the way to receive
+         *                          {@link #onTick(long)} callbacks.
+         */
+        public Counter(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished){
+            Timer.setText(""+(millisUntilFinished/1000));
+        }
+
+        @Override
+        public void onFinish() {
+            Timer.setText("DONE");
+        }
+    }
 
 }

@@ -9,6 +9,7 @@
         <item name="android:statusBarColor">@color/HufflepuffSecondary</item>
         <item name="android:colorBackground">@color/HufflepuffPrimary</item>
         <item name="android:buttonStyle">@style/HufflepuffButton</item>
+        <item name="android:textColorPrimary">@color/HufflepuffSecondary</item>
     </style>
 
     <style name="Theme.Gryffindor" parent="Theme.AppCompat.NoActionBar">
@@ -22,6 +23,7 @@
         <item name="android:statusBarColor">@color/GryffindorSecondary</item>
         <item name="android:colorForeground">@color/GryffindorSecondary</item>
         <item name="android:buttonStyle">@style/GryffindorButton</item>
+        <item name="android:textColorPrimary">@color/GryffindorSecondary</item>
     </style>
 
     <style name="Theme.Ravenclaw" parent="Theme.AppCompat.NoActionBar">
@@ -33,6 +35,7 @@
         <item name="android:statusBarColor">@color/RavenclawSecondary</item>
         <item name="android:colorForeground">@color/RavenclawSecondary</item>
         <item name="android:buttonStyle">@style/RavenclawButton</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="Theme.Slytherin" parent="Theme.AppCompat.NoActionBar">
@@ -44,6 +47,7 @@
         <item name="android:colorForeground">@color/SlytherinSecondary</item>
         <item name="android:statusBarColor">@color/SlytherinSecondary</item>
         <item name="android:buttonStyle">@style/SlytherinButton</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="GryffindorButton" parent="android:Widget.Button">

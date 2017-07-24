@@ -16,17 +16,19 @@
         android:textAlignment="center"
         android:padding="32dp"
         android:layout_margin="16dp"
+        android:textSize="28dp"
         android:layout_alignParentTop="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="32dp"
         android:orientation="vertical"
         android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/Option1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Option 1"
             android:layout_gravity="center"
@@ -34,7 +36,7 @@
 
         <Button
             android:id="@+id/Option2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Option 2"
             android:layout_gravity="center"
@@ -42,7 +44,7 @@
 
         <Button
             android:id="@+id/Option3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Option 3"
             android:layout_gravity="center"
@@ -50,7 +52,7 @@
 
         <Button
             android:id="@+id/Option4"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Option 4"
             android:layout_gravity="center"

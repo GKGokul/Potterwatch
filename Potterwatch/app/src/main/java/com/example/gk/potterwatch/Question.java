@@ -1,8 +1,11 @@
 package com.example.gk.potterwatch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,13 +41,14 @@ public class Question extends TestActivity {
 
     List<QuestionData> Object = new ArrayList<>();
 
+    public String trait = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        String trait = sharedPref.getString("HOUSE", "");
+        Bundle extras = getIntent().getExtras();
+        trait = extras.getString("KEY", "");
         if (trait != null) {
             switch (trait) {
                 case "Bravery":
@@ -84,15 +88,28 @@ public class Question extends TestActivity {
                 } else {
                     Toast.makeText(Question.this, "WRONG Answer", Toast.LENGTH_SHORT).show();
                 }
-                try {
-                    if (QuestionCounter < 10) {
-                        updateUI();
-                    } else {
-                        Log.e("SCOREEEEEEEE", String.valueOf(score));
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            if (QuestionCounter < 10) {
+                                updateUI();
+
+                            } else {
+                                String total = score+" Points";
+                                Intent intent = new Intent(Question.this,ResultPage.class);
+                                intent.putExtra("KEY",trait);
+                                intent.putExtra("POINTS",total);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                }, 3000);
 
             }
         });
@@ -106,16 +123,28 @@ public class Question extends TestActivity {
                 } else {
                     Toast.makeText(Question.this, "WRONG Answer", Toast.LENGTH_SHORT).show();
                 }
-                try {
 
-                    if (QuestionCounter < 10) {
-                        updateUI();
-                    } else {
-                        Log.e("SCOREEEEEEEE", String.valueOf(score));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            if (QuestionCounter < 10) {
+                                updateUI();
+
+                            } else {
+                                String total = score+" Points";
+                                Intent intent = new Intent(Question.this,ResultPage.class);
+                                intent.putExtra("KEY",trait);
+                                intent.putExtra("POINTS",total);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                }, 3000);
 
             }
         });
@@ -130,17 +159,28 @@ public class Question extends TestActivity {
                 } else {
                     Toast.makeText(Question.this, "WRONG Answer", Toast.LENGTH_SHORT).show();
                 }
-                try {
 
-                    if (QuestionCounter < 10) {
-                        updateUI();
-                    } else {
-                        Log.e("SCOREEEEEEEE", String.valueOf(score));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
 
+                            if (QuestionCounter < 10) {
+                                updateUI();
+
+                            } else {
+                                String total = score+" Points";
+                                Intent intent = new Intent(Question.this,ResultPage.class);
+                                intent.putExtra("KEY",trait);
+                                intent.putExtra("POINTS",total);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                }, 3000);
 
             }
         });
@@ -155,17 +195,28 @@ public class Question extends TestActivity {
                 } else {
                     Toast.makeText(Question.this, "WRONG Answer", Toast.LENGTH_SHORT).show();
                 }
-                try {
 
-                    if (QuestionCounter < 10) {
-                        updateUI();
-                    } else {
-                        Log.e("SCOREEEEEEEE", String.valueOf(score));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
 
+                            if (QuestionCounter < 10) {
+                                updateUI();
+
+                            } else {
+                                String total = score+" Points";
+                                Intent intent = new Intent(Question.this,ResultPage.class);
+                                intent.putExtra("KEY",trait);
+                                intent.putExtra("POINTS",total);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                }, 3000);
 
             }
         });
@@ -189,7 +240,7 @@ public class Question extends TestActivity {
         protected String doInBackground(String... params) {
             try {
                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).build();
-                Request request = new Request.Builder().url("http:192.168.43.232:8080/questions").get().build();
+                Request request = new Request.Builder().url("http:192.168.43.108:8080/questions").get().build();
                 Response response = client.newCall(request).execute();
                 jsonResult = response.body().string();
 

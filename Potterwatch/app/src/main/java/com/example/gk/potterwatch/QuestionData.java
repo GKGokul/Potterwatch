@@ -40,7 +40,8 @@ public class QuestionData {
     public String getOption4() {
         return Option4;
     }
-    public String getAnswer(){
+
+    public String getAnswer() {
         return Answer;
     }
 
@@ -64,7 +65,7 @@ public class QuestionData {
         Option4 = val;
     }
 
-    public void setAnswer(String val){
+    public void setAnswer(String val) {
         Answer = val;
     }
 

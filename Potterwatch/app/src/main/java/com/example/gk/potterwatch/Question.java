@@ -3,14 +3,21 @@ package com.example.gk.potterwatch;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +41,7 @@ import okhttp3.Response;
 
 public class Question extends TestActivity {
 
+    Counter count;
     public int QuestionCounter = 0;
     public int score = 0;
     public String AnswerKey;
@@ -41,7 +49,7 @@ public class Question extends TestActivity {
 
     public String jsonResult;
     private TextView QuestionView,ScoreView;
-    private Button One, Two, Three, Four, Answer;
+    private Button One, Two, Three, Four,Timer;
 
     List<QuestionData> Object = new ArrayList<>();
 
@@ -83,6 +91,7 @@ public class Question extends TestActivity {
         buttonColor = initialButton.getColor();
         scoreColor = ScoreView.getCurrentTextColor();
 
+        Timer = (Button) findViewById(R.id.timer);
         if (QuestionCounter == 0) {
             new getQuestions().execute();
         }
@@ -100,6 +109,7 @@ public class Question extends TestActivity {
 
                 if (AnswerKey.equals(ans)) {
                     One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    count.cancel();
                     score += 10;
                     ScoreView.setText(String.valueOf(score));
                     ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
@@ -155,6 +165,7 @@ public class Question extends TestActivity {
 
                 if (AnswerKey.equals(ans)) {
                     Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    count.cancel();
                     score += 10;
                     ScoreView.setText(String.valueOf(score));
                     ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
@@ -200,7 +211,6 @@ public class Question extends TestActivity {
         Three.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 One.setClickable(false);
                 Two.setClickable(false);
                 Three.setClickable(false);
@@ -210,6 +220,7 @@ public class Question extends TestActivity {
 
                 if (AnswerKey.equals(ans)) {
                     Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                count.cancel();
                     score += 10;
                     ScoreView.setText(String.valueOf(score));
                     ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
@@ -255,7 +266,6 @@ public class Question extends TestActivity {
         Four.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 One.setClickable(false);
                 Two.setClickable(false);
                 Three.setClickable(false);
@@ -265,6 +275,7 @@ public class Question extends TestActivity {
 
                 if (AnswerKey.equals(ans)) {
                     Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    count.cancel();
                     score += 10;
                     ScoreView.setText(String.valueOf(score));
                     ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
@@ -307,6 +318,8 @@ public class Question extends TestActivity {
             }
         });
 
+
+
     }
 
     private class getQuestions extends AsyncTask<String, String, String> {
@@ -316,6 +329,7 @@ public class Question extends TestActivity {
             try {
                 extractDataFromJSON();
                 updateUI();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -369,7 +383,8 @@ public class Question extends TestActivity {
         Four.setClickable(true);
         ScoreView.setTextColor(scoreColor);
         QuestionCounter++;
-
+        count = new Counter(11000,100);
+        count.start();
     }
 
 
@@ -391,5 +406,39 @@ public class Question extends TestActivity {
         }
     }
 
+    public class Counter extends CountDownTimer{
+
+        /**
+         * @param millisInFuture    The number of millis in the future from the call
+         *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
+         *                          is called.
+         * @param countDownInterval The interval along the way to receive
+         *                          {@link #onTick(long)} callbacks.
+         */
+        public Counter(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished){
+            Timer.setText(""+(millisUntilFinished/1000));
+            if((millisUntilFinished/1000)<5){
+                Animation anim = new AlphaAnimation(0.0f, 1.0f);
+                anim.setDuration(50); //You can manage the blinking time with this parameter
+                anim.setStartOffset(20);
+                anim.setRepeatMode(Animation.REVERSE);
+                anim.setRepeatCount(Animation.ABSOLUTE);
+                Timer.startAnimation(anim);
+                Timer.setBackgroundColor(Color.RED);
+
+            }
+        }
+
+        @Override
+        public void onFinish() {
+            Timer.setText("0");
+            Toast.makeText(Question.this, "NOT ANSWERED", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

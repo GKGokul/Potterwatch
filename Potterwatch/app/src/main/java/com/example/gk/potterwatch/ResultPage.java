@@ -1,10 +1,15 @@
 package com.example.gk.potterwatch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import static com.example.gk.potterwatch.R.id.button;
 
 public class ResultPage extends AppCompatActivity {
 
@@ -37,5 +42,15 @@ public class ResultPage extends AppCompatActivity {
         String score = extras.getString("POINTS","");
         TextView display = (TextView) findViewById(R.id.player_score);
         display.setText(score);
+        Button replay = (Button) findViewById(R.id.restart);
+
+        replay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ResultPage.this,Question.class);
+                intent.putExtra("KEY",trait);
+                startActivity(intent);
+            }
+        });
     }
 }

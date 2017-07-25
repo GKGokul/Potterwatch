@@ -25,4 +25,12 @@
         android:layout_margin="48dp"
         />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Play Again?"
+        android:padding="24dp"
+        android:id="@+id/restart"/>
+
 </LinearLayout>

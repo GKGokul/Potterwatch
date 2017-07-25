@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,7 +41,7 @@ public class Question extends TestActivity {
 
     public String jsonResult;
     private TextView QuestionView,ScoreView;
-    private Button One, Two, Three, Four;
+    private Button One, Two, Three, Four, Answer;
 
     List<QuestionData> Object = new ArrayList<>();
 
@@ -91,6 +93,11 @@ public class Question extends TestActivity {
 
                 String ans = One.getText().toString();
 
+                One.setClickable(false);
+                Two.setClickable(false);
+                Three.setClickable(false);
+                Four.setClickable(false);
+
                 if (AnswerKey.equals(ans)) {
                     One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
@@ -99,6 +106,15 @@ public class Question extends TestActivity {
                 } else {
                     One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+                    if(Two.getText().toString()==AnswerKey) {
+                        Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    else if(Three.getText().toString()==AnswerKey) {
+                        Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    else if(Four.getText().toString()==AnswerKey){
+                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
                 }
 
                 final Handler handler = new Handler();
@@ -130,6 +146,11 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
+                One.setClickable(false);
+                Two.setClickable(false);
+                Three.setClickable(false);
+                Four.setClickable(false);
+
                 String ans = Two.getText().toString();
 
                 if (AnswerKey.equals(ans)) {
@@ -140,6 +161,15 @@ public class Question extends TestActivity {
                 } else {
                     Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+                    if(One.getText().toString()==AnswerKey) {
+                        One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    else if(Three.getText().toString()==AnswerKey) {
+                        Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    else if(Four.getText().toString()==AnswerKey){
+                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
                 }
 
                 final Handler handler = new Handler();
@@ -171,6 +201,11 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
+                One.setClickable(false);
+                Two.setClickable(false);
+                Three.setClickable(false);
+                Four.setClickable(false);
+
                 String ans = Three.getText().toString();
 
                 if (AnswerKey.equals(ans)) {
@@ -181,6 +216,15 @@ public class Question extends TestActivity {
                 } else {
                     Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+                    if(Two.getText().toString()==AnswerKey) {
+                        Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    else if(One.getText().toString()==AnswerKey) {
+                        One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    else if(Four.getText().toString()==AnswerKey){
+                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
                 }
 
                 final Handler handler = new Handler();
@@ -212,6 +256,11 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
+                One.setClickable(false);
+                Two.setClickable(false);
+                Three.setClickable(false);
+                Four.setClickable(false);
+
                 String ans = Four.getText().toString();
 
                 if (AnswerKey.equals(ans)) {
@@ -222,6 +271,15 @@ public class Question extends TestActivity {
                 } else {
                     Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+                    if(Two.getText().toString()==AnswerKey) {
+                        Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    else if(Three.getText().toString()==AnswerKey) {
+                        Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    else if(One.getText().toString()==AnswerKey){
+                        One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
                 }
 
                 final Handler handler = new Handler();
@@ -287,14 +345,28 @@ public class Question extends TestActivity {
         QuestionData temp = Object.get(QuestionCounter);
         AnswerKey = temp.getAnswer();
         QuestionView.setText(temp.getQuestion());
-        One.setText(temp.getOption1());
+
+        String[] option = new String[4];
+
+        option[0] = temp.getOption1();
+        option[1] = temp.getOption2();
+        option[2] = temp.getOption3();
+        option[3] = temp.getOption4();
+
+        Collections.shuffle(Arrays.asList(option));
+
+        One.setText(option[0]);
         One.setBackgroundColor(buttonColor);
-        Two.setText(temp.getOption2());
+        One.setClickable(true);
+        Two.setText(option[1]);
         Two.setBackgroundColor(buttonColor);
-        Three.setText(temp.getOption3());
+        Two.setClickable(true);
+        Three.setText(option[2]);
         Three.setBackgroundColor(buttonColor);
-        Four.setText(temp.getOption4());
+        Three.setClickable(true);
+        Four.setText(option[3]);
         Four.setBackgroundColor(buttonColor);
+        Four.setClickable(true);
         ScoreView.setTextColor(scoreColor);
         QuestionCounter++;
 

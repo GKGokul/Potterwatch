@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
+            android:layout_marginTop="10dp"
             android:text="Option 1" />
 
         <Button
@@ -63,14 +63,16 @@
 
     </LinearLayout>
 
-    <TextView
+    <Button
         android:id="@+id/timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@drawable/shape"
+        android:clickable="false"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
         android:layout_above="@+id/linearLayout"
         android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:textSize="32sp" />
+        android:textSize="16sp" />
 
 
 </RelativeLayout>

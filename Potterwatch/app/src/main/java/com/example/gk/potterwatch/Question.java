@@ -2,12 +2,15 @@ package com.example.gk.potterwatch;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +38,8 @@ public class Question extends TestActivity {
     public String AnswerKey;
 
     public String jsonResult;
-    private TextView QuestionView,Timer;
-    private Button One, Two, Three, Four;
+    private TextView QuestionView;
+    private Button One, Two, Three, Four,Timer;
 
     List<QuestionData> Object = new ArrayList<>();
 
@@ -72,7 +75,7 @@ public class Question extends TestActivity {
         Three = (Button) findViewById(R.id.Option3);
         Four = (Button) findViewById(R.id.Option4);
 
-        Timer = (TextView) findViewById(R.id.timer);
+        Timer = (Button) findViewById(R.id.timer);
         if (QuestionCounter == 0) {
             new getQuestions().execute();
         }
@@ -261,11 +264,22 @@ public class Question extends TestActivity {
         @Override
         public void onTick(long millisUntilFinished){
             Timer.setText(""+(millisUntilFinished/1000));
+            if((millisUntilFinished/1000)<5){
+                Animation anim = new AlphaAnimation(0.0f, 1.0f);
+                anim.setDuration(50); //You can manage the blinking time with this parameter
+                anim.setStartOffset(20);
+                anim.setRepeatMode(Animation.REVERSE);
+                anim.setRepeatCount(Animation.ABSOLUTE);
+                Timer.startAnimation(anim);
+                Timer.setBackgroundColor(Color.RED);
+
+            }
         }
 
         @Override
         public void onFinish() {
-            Timer.setText("DONE");
+            Timer.setText("0");
+            Toast.makeText(Question.this, "NOT ANSWERED", Toast.LENGTH_SHORT).show();
         }
     }
 

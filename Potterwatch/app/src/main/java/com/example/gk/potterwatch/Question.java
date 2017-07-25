@@ -35,10 +35,10 @@ public class Question extends TestActivity {
     public int QuestionCounter = 0;
     public int score = 0;
     public String AnswerKey;
-    public int buttonColor;
+    public int buttonColor,scoreColor;
 
     public String jsonResult;
-    private TextView QuestionView;
+    private TextView QuestionView,ScoreView;
     private Button One, Two, Three, Four;
 
     List<QuestionData> Object = new ArrayList<>();
@@ -76,8 +76,10 @@ public class Question extends TestActivity {
         Three = (Button) findViewById(R.id.Option3);
         Four = (Button) findViewById(R.id.Option4);
         ColorDrawable initialButton = (ColorDrawable) One.getBackground();
+        ScoreView = (TextView) findViewById(R.id.score);
 
         buttonColor = initialButton.getColor();
+        scoreColor = ScoreView.getCurrentTextColor();
 
         if (QuestionCounter == 0) {
             new getQuestions().execute();
@@ -92,8 +94,11 @@ public class Question extends TestActivity {
                 if (AnswerKey.equals(ans)) {
                     One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
+                    ScoreView.setText(String.valueOf(score));
+                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
                 } else {
                     One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
                 }
 
                 final Handler handler = new Handler();
@@ -130,8 +135,11 @@ public class Question extends TestActivity {
                 if (AnswerKey.equals(ans)) {
                     Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
+                    ScoreView.setText(String.valueOf(score));
+                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
                 } else {
                     Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
                 }
 
                 final Handler handler = new Handler();
@@ -168,8 +176,11 @@ public class Question extends TestActivity {
                 if (AnswerKey.equals(ans)) {
                     Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
+                    ScoreView.setText(String.valueOf(score));
+                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
                 } else {
                     Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
                 }
 
                 final Handler handler = new Handler();
@@ -206,8 +217,11 @@ public class Question extends TestActivity {
                 if (AnswerKey.equals(ans)) {
                     Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
+                    ScoreView.setText(String.valueOf(score));
+                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
                 } else {
                     Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
                 }
 
                 final Handler handler = new Handler();
@@ -281,6 +295,7 @@ public class Question extends TestActivity {
         Three.setBackgroundColor(buttonColor);
         Four.setText(temp.getOption4());
         Four.setBackgroundColor(buttonColor);
+        ScoreView.setTextColor(scoreColor);
         QuestionCounter++;
 
     }

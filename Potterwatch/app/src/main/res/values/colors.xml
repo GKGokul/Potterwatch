@@ -15,4 +15,7 @@
     <color name ="RavenclawSecondary">#946B2D</color>
     <color name="SlytherinSecondary">#AAAAAA</color>
 
+    <color name="CorrectAnswer">#00FF0F</color>
+    <color name="WrongAnswer">#FF0000</color>
+
 </resources>

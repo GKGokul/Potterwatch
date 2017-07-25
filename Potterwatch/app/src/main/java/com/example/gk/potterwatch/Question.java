@@ -3,6 +3,7 @@ package com.example.gk.potterwatch;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -34,6 +35,7 @@ public class Question extends TestActivity {
     public int QuestionCounter = 0;
     public int score = 0;
     public String AnswerKey;
+    public int buttonColor;
 
     public String jsonResult;
     private TextView QuestionView;
@@ -73,6 +75,9 @@ public class Question extends TestActivity {
         Two = (Button) findViewById(R.id.Option2);
         Three = (Button) findViewById(R.id.Option3);
         Four = (Button) findViewById(R.id.Option4);
+        ColorDrawable initialButton = (ColorDrawable) One.getBackground();
+
+        buttonColor = initialButton.getColor();
 
         if (QuestionCounter == 0) {
             new getQuestions().execute();
@@ -82,11 +87,13 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
-                if (AnswerKey.equals("OptionA")) {
-                    Toast.makeText(Question.this, "Correct Answer", Toast.LENGTH_SHORT).show();
+                String ans = One.getText().toString();
+
+                if (AnswerKey.equals(ans)) {
+                    One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
                 } else {
-                    Toast.makeText(Question.this, "WRONG Answer", Toast.LENGTH_SHORT).show();
+                    One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                 }
 
                 final Handler handler = new Handler();
@@ -117,11 +124,14 @@ public class Question extends TestActivity {
         Two.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AnswerKey.equals("OptionB")) {
-                    Toast.makeText(Question.this, "Correct Answer", Toast.LENGTH_SHORT).show();
+
+                String ans = Two.getText().toString();
+
+                if (AnswerKey.equals(ans)) {
+                    Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
                 } else {
-                    Toast.makeText(Question.this, "WRONG Answer", Toast.LENGTH_SHORT).show();
+                    Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                 }
 
                 final Handler handler = new Handler();
@@ -153,11 +163,13 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
-                if (AnswerKey.equals("OptionC")) {
-                    Toast.makeText(Question.this, "Correct Answer", Toast.LENGTH_SHORT).show();
+                String ans = Three.getText().toString();
+
+                if (AnswerKey.equals(ans)) {
+                    Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
                 } else {
-                    Toast.makeText(Question.this, "WRONG Answer", Toast.LENGTH_SHORT).show();
+                    Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                 }
 
                 final Handler handler = new Handler();
@@ -189,11 +201,13 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
-                if (AnswerKey.equals("OptionD")) {
-                    Toast.makeText(Question.this, "Correct Answer", Toast.LENGTH_SHORT).show();
+                String ans = Four.getText().toString();
+
+                if (AnswerKey.equals(ans)) {
+                    Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     score += 10;
                 } else {
-                    Toast.makeText(Question.this, "WRONG Answer", Toast.LENGTH_SHORT).show();
+                    Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                 }
 
                 final Handler handler = new Handler();
@@ -240,7 +254,10 @@ public class Question extends TestActivity {
         protected String doInBackground(String... params) {
             try {
                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).build();
-                Request request = new Request.Builder().url("http:192.168.43.108:8080/questions").get().build();
+
+                //TODO: Change IP before running
+
+                Request request = new Request.Builder().url("http:192.168.43.198:8080/questions").get().build();
                 Response response = client.newCall(request).execute();
                 jsonResult = response.body().string();
 
@@ -257,9 +274,13 @@ public class Question extends TestActivity {
         AnswerKey = temp.getAnswer();
         QuestionView.setText(temp.getQuestion());
         One.setText(temp.getOption1());
+        One.setBackgroundColor(buttonColor);
         Two.setText(temp.getOption2());
+        Two.setBackgroundColor(buttonColor);
         Three.setText(temp.getOption3());
+        Three.setBackgroundColor(buttonColor);
         Four.setText(temp.getOption4());
+        Four.setBackgroundColor(buttonColor);
         QuestionCounter++;
 
     }

@@ -355,7 +355,7 @@ public class Question extends TestActivity {
 
                 //TODO: Change IP before running
 
-                Request request = new Request.Builder().url("http:192.168.43.198:8080/questions").get().build();
+                Request request = new Request.Builder().url("https://potterwatch.herokuapp.com/questions").get().build();
                 Response response = client.newCall(request).execute();
                 jsonResult = response.body().string();
 

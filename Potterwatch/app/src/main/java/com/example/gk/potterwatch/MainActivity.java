@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //TODO: Change IP before running
 
-                Request request = new Request.Builder().url("http:192.168.43.198:8080/fbconnect").post(JSONdata).build();
+                Request request = new Request.Builder().url("https://potterwatch.herokuapp.com/fbconnect").post(JSONdata).build();
                 Response response = client.newCall(request).execute();
 
                 Log.e("TEST", request.toString());

@@ -1,17 +1,21 @@
 package com.example.gk.potterwatch;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +54,7 @@ public class Question extends TestActivity {
     public String jsonResult;
     private TextView QuestionView,ScoreView;
     private Button One, Two, Three, Four,Timer;
+    Drawable drawable;
 
     List<QuestionData> Object = new ArrayList<>();
 
@@ -92,6 +97,9 @@ public class Question extends TestActivity {
         scoreColor = ScoreView.getCurrentTextColor();
 
         Timer = (Button) findViewById(R.id.timer);
+
+        drawable = Timer.getBackground();
+
         if (QuestionCounter == 0) {
             new getQuestions().execute();
         }
@@ -116,13 +124,14 @@ public class Question extends TestActivity {
                 } else {
                     One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    if(Two.getText().toString()==AnswerKey) {
+                    count.cancel();
+                    if(Two.getText().toString().equals(AnswerKey)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
-                    else if(Three.getText().toString()==AnswerKey) {
+                    else if(Three.getText().toString().equals(AnswerKey)) {
                         Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
-                    else if(Four.getText().toString()==AnswerKey){
+                    else if(Four.getText().toString().equals(AnswerKey)){
                         Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
                 }
@@ -172,13 +181,14 @@ public class Question extends TestActivity {
                 } else {
                     Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    if(One.getText().toString()==AnswerKey) {
+                    count.cancel();
+                    if(One.getText().toString().equals(AnswerKey)) {
                         One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
-                    else if(Three.getText().toString()==AnswerKey) {
+                    else if(Three.getText().toString().equals(AnswerKey)) {
                         Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
-                    else if(Four.getText().toString()==AnswerKey){
+                    else if(Four.getText().toString().equals(AnswerKey)){
                         Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
                 }
@@ -227,13 +237,14 @@ public class Question extends TestActivity {
                 } else {
                     Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    if(Two.getText().toString()==AnswerKey) {
+                    count.cancel();
+                    if(Two.getText().toString().equals(AnswerKey)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
-                    else if(One.getText().toString()==AnswerKey) {
+                    else if(One.getText().toString().equals(AnswerKey)) {
                         One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
-                    else if(Four.getText().toString()==AnswerKey){
+                    else if(Four.getText().toString().equals(AnswerKey)){
                         Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
                 }
@@ -282,13 +293,14 @@ public class Question extends TestActivity {
                 } else {
                     Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    if(Two.getText().toString()==AnswerKey) {
+                    count.cancel();
+                    if(Two.getText().toString().equals(AnswerKey)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
-                    else if(Three.getText().toString()==AnswerKey) {
+                    else if(Three.getText().toString().equals(AnswerKey)) {
                         Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
-                    else if(One.getText().toString()==AnswerKey){
+                    else if(One.getText().toString().equals(AnswerKey)){
                         One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
                 }
@@ -354,12 +366,12 @@ public class Question extends TestActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void updateUI() throws JSONException {
 
         QuestionData temp = Object.get(QuestionCounter);
         AnswerKey = temp.getAnswer();
         QuestionView.setText(temp.getQuestion());
-
         String[] option = new String[4];
 
         option[0] = temp.getOption1();
@@ -368,6 +380,8 @@ public class Question extends TestActivity {
         option[3] = temp.getOption4();
 
         Collections.shuffle(Arrays.asList(option));
+
+        Timer.setBackground(drawable);
 
         One.setText(option[0]);
         One.setBackgroundColor(buttonColor);
@@ -415,6 +429,7 @@ public class Question extends TestActivity {
          * @param countDownInterval The interval along the way to receive
          *                          {@link #onTick(long)} callbacks.
          */
+
         public Counter(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
@@ -429,15 +444,52 @@ public class Question extends TestActivity {
                 anim.setRepeatMode(Animation.REVERSE);
                 anim.setRepeatCount(Animation.ABSOLUTE);
                 Timer.startAnimation(anim);
-                Timer.setBackgroundColor(Color.RED);
-
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Timer.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_shape));
+                }
+                else {
+                    Timer.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.red_shape));
+                }
             }
         }
 
         @Override
         public void onFinish() {
             Timer.setText("0");
-            Toast.makeText(Question.this, "NOT ANSWERED", Toast.LENGTH_SHORT).show();
+            if(Two.getText().toString().equals(AnswerKey)) {
+                Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+            }
+            else if(Three.getText().toString().equals(AnswerKey)) {
+                Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+            }
+            else if(One.getText().toString().equals(AnswerKey)){
+                One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+            }
+            else if(Four.getText().toString().equals(AnswerKey)) {
+                Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+            }
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        if (QuestionCounter < 10) {
+                            updateUI();
+
+                        } else {
+                            String total = score+" Points";
+                            Intent intent = new Intent(Question.this,ResultPage.class);
+                            intent.putExtra("KEY",trait);
+                            intent.putExtra("POINTS",total);
+                            startActivity(intent);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 3000);
         }
     }
 

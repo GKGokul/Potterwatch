@@ -100,6 +100,11 @@
         <item name="android:bottomLeftRadius">5dp</item>
     </style>
 
+    <style name="TimerButton" parent="android:Widget.Button">
+        <item name="android:textSize">16dp</item>
+        <item name="android:background">@drawable/shape</item>
+    </style>
+
     <style name="hogwarts.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="hogwarts.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

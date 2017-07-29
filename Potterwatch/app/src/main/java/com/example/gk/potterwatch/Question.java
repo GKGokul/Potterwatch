@@ -1,6 +1,9 @@
 package com.example.gk.potterwatch;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -101,7 +104,7 @@ public class Question extends TestActivity {
         drawable = Timer.getBackground();
 
         if (QuestionCounter == 0) {
-            new getQuestions().execute();
+            new getQuestions(Question.this).execute();
         }
 
         One.setOnClickListener(new View.OnClickListener() {
@@ -335,11 +338,30 @@ public class Question extends TestActivity {
     }
 
     private class getQuestions extends AsyncTask<String, String, String> {
+        private ProgressDialog dialog;
+        android.app.Activity Activity;
+
+        public getQuestions(Activity Activity) {
+            this.Activity = Activity;
+            context = Activity;
+            dialog = new ProgressDialog(context);
+        }
+
+        private Context context;
+
+        protected void onPreExecute() {
+            this.dialog.setMessage("Loading...");
+            this.dialog.show();
+        }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
                 extractDataFromJSON();
+                if(dialog.isShowing()) {
+                    dialog.dismiss();
+                }
                 updateUI();
 
             } catch (JSONException e) {

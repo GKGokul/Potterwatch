@@ -1,5 +1,8 @@
 package com.example.gk.potterwatch;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -108,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                                     facebookName = object.getString("name");
                                     profilePictureid = object.getString("id");
                                     Log.e("CHECKKKK: ", email + " " + gender + " " + facebookName + " " + profilePictureid);
-                                    new feedTask().execute();
+                                    new feedTask(MainActivity.this).execute();
 
                                 } catch (JSONException error) {
                                     error.printStackTrace();
@@ -189,6 +192,23 @@ public class MainActivity extends AppCompatActivity {
 
     // Class to perform the post request to the server
     private class feedTask extends AsyncTask<String, Void, String> {
+
+        private ProgressDialog dialog;
+        private Activity activity;
+
+        public feedTask(Activity activity) {
+            this.activity = activity;
+            context = activity;
+            dialog = new ProgressDialog(context);
+        }
+
+        protected void onPreExecute() {
+            this.dialog.setMessage("Loading...");
+            this.dialog.show();
+        }
+
+        private Context context;
+
         @Override
         protected String doInBackground(String... params) {
             try {
@@ -226,6 +246,9 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             if (userExistence) {
                 Intent i = new Intent(MainActivity.this, ColorPicker.class);
+                if(dialog.isShowing()) {
+                    dialog.dismiss();
+                }
                 startActivity(i);
                 finish();
             } else {

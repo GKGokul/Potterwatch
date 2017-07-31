@@ -10,8 +10,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Score"
+        android:text=""
         android:gravity="center"
+        android:id="@+id/result"
         android:layout_marginTop="100dp"
         android:textSize="64dp"
         />

@@ -17,5 +17,6 @@
 
     <color name="CorrectAnswer">#00FF0F</color>
     <color name="WrongAnswer">#FF0000</color>
+    <color name="CompAnswer">#797D7F</color>
 
 </resources>

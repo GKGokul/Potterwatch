@@ -196,15 +196,17 @@ public class MainActivity extends AppCompatActivity {
         private ProgressDialog dialog;
         private Activity activity;
 
+        //Constructor to initialize progressDialog
         public feedTask(Activity activity) {
             this.activity = activity;
             context = activity;
             dialog = new ProgressDialog(context);
         }
 
+        //PreExecute method
         protected void onPreExecute() {
-            this.dialog.setMessage("Loading...");
-            this.dialog.show();
+            this.dialog.setMessage("Loading...");   //Sets dialog message to Loading...
+            this.dialog.show();     //Displays dialog
         }
 
         private Context context;
@@ -247,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
             if (userExistence) {
                 Intent i = new Intent(MainActivity.this, ColorPicker.class);
                 if(dialog.isShowing()) {
-                    dialog.dismiss();
+                    dialog.dismiss();   //Dismisses dialog if it is showing.
                 }
                 startActivity(i);
                 finish();

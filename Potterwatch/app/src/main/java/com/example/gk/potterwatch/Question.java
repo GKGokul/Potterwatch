@@ -34,30 +34,40 @@ import junit.framework.Test;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class Question extends TestActivity {
 
     Counter count;
     public int QuestionCounter = 0;
     public int score = 0;
+    public int compScore = 0;
     public String AnswerKey;
     public int buttonColor,scoreColor;
 
     public String jsonResult;
-    private TextView QuestionView,ScoreView;
+    private TextView QuestionView,ScoreView,compScoreView;
     private Button One, Two, Three, Four,Timer;
     Drawable drawable;
+    public String compAnswer;
+    public boolean isAnswered;
+
+    public int compTime = ThreadLocalRandom.current().nextInt(0,10001);
+
 
     List<QuestionData> Object = new ArrayList<>();
 
@@ -95,6 +105,7 @@ public class Question extends TestActivity {
         Four = (Button) findViewById(R.id.Option4);
         ColorDrawable initialButton = (ColorDrawable) One.getBackground();
         ScoreView = (TextView) findViewById(R.id.score);
+        compScoreView = (TextView) findViewById(R.id.comp_score);
 
         buttonColor = initialButton.getColor();
         scoreColor = ScoreView.getCurrentTextColor();
@@ -113,6 +124,7 @@ public class Question extends TestActivity {
 
                 String ans = One.getText().toString();
 
+                isAnswered = true;
                 One.setClickable(false);
                 Two.setClickable(false);
                 Three.setClickable(false);
@@ -139,27 +151,7 @@ public class Question extends TestActivity {
                     }
                 }
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-
-                            if (QuestionCounter < 10) {
-                                updateUI();
-
-                            } else {
-                                String total = score+" Points";
-                                Intent intent = new Intent(Question.this,ResultPage.class);
-                                intent.putExtra("KEY",trait);
-                                intent.putExtra("POINTS",total);
-                                startActivity(intent);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 3000);
+                answerCheck();
 
             }
         });
@@ -168,6 +160,7 @@ public class Question extends TestActivity {
             @Override
             public void onClick(View v) {
 
+                isAnswered = true;
                 One.setClickable(false);
                 Two.setClickable(false);
                 Three.setClickable(false);
@@ -196,27 +189,7 @@ public class Question extends TestActivity {
                     }
                 }
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-
-                            if (QuestionCounter < 10) {
-                                updateUI();
-
-                            } else {
-                                String total = score+" Points";
-                                Intent intent = new Intent(Question.this,ResultPage.class);
-                                intent.putExtra("KEY",trait);
-                                intent.putExtra("POINTS",total);
-                                startActivity(intent);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 3000);
+                answerCheck();
 
             }
         });
@@ -224,6 +197,8 @@ public class Question extends TestActivity {
         Three.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                isAnswered = true;
                 One.setClickable(false);
                 Two.setClickable(false);
                 Three.setClickable(false);
@@ -241,38 +216,16 @@ public class Question extends TestActivity {
                     Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
                     count.cancel();
-                    if(Two.getText().toString().equals(AnswerKey)) {
+                    if (Two.getText().toString().equals(AnswerKey)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    else if(One.getText().toString().equals(AnswerKey)) {
+                    } else if (One.getText().toString().equals(AnswerKey)) {
                         One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    else if(Four.getText().toString().equals(AnswerKey)){
+                    } else if (Four.getText().toString().equals(AnswerKey)) {
                         Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
                 }
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-
-                            if (QuestionCounter < 10) {
-                                updateUI();
-
-                            } else {
-                                String total = score+" Points";
-                                Intent intent = new Intent(Question.this,ResultPage.class);
-                                intent.putExtra("KEY",trait);
-                                intent.putExtra("POINTS",total);
-                                startActivity(intent);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 3000);
+                answerCheck();
 
             }
         });
@@ -280,6 +233,8 @@ public class Question extends TestActivity {
         Four.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                isAnswered = true;
                 One.setClickable(false);
                 Two.setClickable(false);
                 Three.setClickable(false);
@@ -308,39 +263,17 @@ public class Question extends TestActivity {
                     }
                 }
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-
-                            if (QuestionCounter < 10) {
-                                updateUI();
-
-                            } else {
-                                String total = score+" Points";
-                                Intent intent = new Intent(Question.this,ResultPage.class);
-                                intent.putExtra("KEY",trait);
-                                intent.putExtra("POINTS",total);
-                                startActivity(intent);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 3000);
+                answerCheck();
 
             }
         });
-
-
-
     }
 
     private class getQuestions extends AsyncTask<String, String, String> {
-        private ProgressDialog dialog;
+        private ProgressDialog dialog;      //ProgressDialog declaration
         android.app.Activity Activity;
 
+        //Constructor to initialize progressDialog
         public getQuestions(Activity Activity) {
             this.Activity = Activity;
             context = Activity;
@@ -349,9 +282,10 @@ public class Question extends TestActivity {
 
         private Context context;
 
+
         protected void onPreExecute() {
-            this.dialog.setMessage("Loading...");
-            this.dialog.show();
+            this.dialog.setMessage("Loading...");   //Sets Dialog message
+            this.dialog.show();     //Shows Dialog
         }
 
         @Override
@@ -360,7 +294,7 @@ public class Question extends TestActivity {
             try {
                 extractDataFromJSON();
                 if(dialog.isShowing()) {
-                    dialog.dismiss();
+                    dialog.dismiss();   //Dismisses dialog
                 }
                 updateUI();
 
@@ -405,6 +339,7 @@ public class Question extends TestActivity {
 
         Timer.setBackground(drawable);
 
+        isAnswered = false;
         One.setText(option[0]);
         One.setBackgroundColor(buttonColor);
         One.setClickable(true);
@@ -418,11 +353,74 @@ public class Question extends TestActivity {
         Four.setBackgroundColor(buttonColor);
         Four.setClickable(true);
         ScoreView.setTextColor(scoreColor);
+        compScoreView.setTextColor(scoreColor);
         QuestionCounter++;
         count = new Counter(11000,100);
         count.start();
+        compTurn();
     }
 
+    private void compTurn() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int compAnsKey = ThreadLocalRandom.current().nextInt(0,4);
+
+                switch(compAnsKey) {
+                    case 0:         compAnswer = One.getText().toString();
+                                    One.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
+                        break;
+                    case 1:         compAnswer = Two.getText().toString();
+                                    Two.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
+                        break;
+                    case 2:         compAnswer = Three.getText().toString();
+                                    Three.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
+                        break;
+                    case 3:         compAnswer = Four.getText().toString();
+                                    Four.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
+                        break;
+                }
+
+                if(compAnswer.equals(AnswerKey) && !isAnswered) {
+                    One.setClickable(false);
+                    Two.setClickable(false);
+                    Three.setClickable(false);
+                    Four.setClickable(false);
+                    compScore+=10;
+                    count.cancel();
+                    compScoreView.setText(String.valueOf(compScore));
+                    compScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
+                }
+
+            }
+        },compTime);
+    }
+
+    public void answerCheck() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    if (QuestionCounter < 10) {
+                        updateUI();
+
+                    } else {
+                        Intent intent = new Intent(Question.this,ResultPage.class);
+                        intent.putExtra("KEY",trait);
+                        intent.putExtra("POINTS",String.valueOf(score));
+                        intent.putExtra("CPOINTS",String.valueOf(compScore));
+                        startActivity(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 3000);
+    }
 
     private void extractDataFromJSON() throws JSONException {
         JSONArray array = new JSONArray(jsonResult);
@@ -501,10 +499,10 @@ public class Question extends TestActivity {
                             updateUI();
 
                         } else {
-                            String total = score+" Points";
                             Intent intent = new Intent(Question.this,ResultPage.class);
                             intent.putExtra("KEY",trait);
-                            intent.putExtra("POINTS",total);
+                            intent.putExtra("POINTS",String.valueOf(score));
+                            intent.putExtra("CPOINTS",String.valueOf(compScore));
                             startActivity(intent);
                         }
                     } catch (JSONException e) {

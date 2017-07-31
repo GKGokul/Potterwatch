@@ -40,8 +40,24 @@ public class ResultPage extends AppCompatActivity {
         }
         setContentView(R.layout.activity_result_page);
         String score = extras.getString("POINTS","");
+        String compScore = extras.getString("CPOINTS","");
+        String finalScore = score+"-"+compScore;
+        String result;
+        int s = Integer.valueOf(score);
+        int cs = Integer.valueOf(compScore);
+        if(s>cs) {
+            result = "You Win!";
+        }
+        else if(s<cs) {
+            result = "You Lose!";
+        }
+        else {
+            result = "Its a Tie!";
+        }
+        TextView res = (TextView) findViewById(R.id.result);
         TextView display = (TextView) findViewById(R.id.player_score);
-        display.setText(score);
+        display.setText(finalScore);
+        res.setText(result);
         Button replay = (Button) findViewById(R.id.restart);
 
         replay.setOnClickListener(new View.OnClickListener() {

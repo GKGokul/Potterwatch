@@ -58,15 +58,16 @@ public class Question extends TestActivity {
     public int compScore = 0;
     public String AnswerKey;
     public int buttonColor,scoreColor;
+    public String[] option = new String[4];
 
     public String jsonResult;
     private TextView QuestionView,ScoreView,compScoreView;
     private Button One, Two, Three, Four,Timer;
     Drawable drawable;
     public String compAnswer;
-    public boolean isAnswered;
+    public boolean isAnswered,compIsAnswered,isCorrect;
 
-    public int compTime = ThreadLocalRandom.current().nextInt(0,10001);
+    public int compTime;
 
 
     List<QuestionData> Object = new ArrayList<>();
@@ -132,14 +133,15 @@ public class Question extends TestActivity {
 
                 if (AnswerKey.equals(ans)) {
                     One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    count.cancel();
+                    isCorrect = true;
                     score += 10;
                     ScoreView.setText(String.valueOf(score));
                     ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
                 } else {
                     One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    count.cancel();
+
                     if(Two.getText().toString().equals(AnswerKey)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
@@ -149,10 +151,11 @@ public class Question extends TestActivity {
                     else if(Four.getText().toString().equals(AnswerKey)){
                         Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
+
+                    if(compIsAnswered) {
+                        answerCheck();
+                    }
                 }
-
-                answerCheck();
-
             }
         });
 
@@ -170,14 +173,15 @@ public class Question extends TestActivity {
 
                 if (AnswerKey.equals(ans)) {
                     Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    count.cancel();
+                    isCorrect = true;
                     score += 10;
                     ScoreView.setText(String.valueOf(score));
                     ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
                 } else {
                     Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    count.cancel();
+
                     if(One.getText().toString().equals(AnswerKey)) {
                         One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
@@ -187,9 +191,10 @@ public class Question extends TestActivity {
                     else if(Four.getText().toString().equals(AnswerKey)){
                         Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
+                    if(compIsAnswered) {
+                        answerCheck();
+                    }
                 }
-
-                answerCheck();
 
             }
         });
@@ -208,14 +213,15 @@ public class Question extends TestActivity {
 
                 if (AnswerKey.equals(ans)) {
                     Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                count.cancel();
+                    isCorrect = true;
                     score += 10;
                     ScoreView.setText(String.valueOf(score));
                     ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
                 } else {
                     Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    count.cancel();
+
                     if (Two.getText().toString().equals(AnswerKey)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     } else if (One.getText().toString().equals(AnswerKey)) {
@@ -223,10 +229,10 @@ public class Question extends TestActivity {
                     } else if (Four.getText().toString().equals(AnswerKey)) {
                         Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
+                    if(compIsAnswered) {
+                        answerCheck();
+                    }
                 }
-
-                answerCheck();
-
             }
         });
 
@@ -244,14 +250,15 @@ public class Question extends TestActivity {
 
                 if (AnswerKey.equals(ans)) {
                     Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    count.cancel();
+                    isCorrect = true;
                     score += 10;
                     ScoreView.setText(String.valueOf(score));
                     ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
+
                 } else {
                     Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
                     ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    count.cancel();
                     if(Two.getText().toString().equals(AnswerKey)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
@@ -261,10 +268,10 @@ public class Question extends TestActivity {
                     else if(One.getText().toString().equals(AnswerKey)){
                         One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                     }
+                    if(compIsAnswered) {
+                        answerCheck();
+                    }
                 }
-
-                answerCheck();
-
             }
         });
     }
@@ -322,13 +329,13 @@ public class Question extends TestActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void updateUI() throws JSONException {
 
         QuestionData temp = Object.get(QuestionCounter);
         AnswerKey = temp.getAnswer();
         QuestionView.setText(temp.getQuestion());
-        String[] option = new String[4];
 
         option[0] = temp.getOption1();
         option[1] = temp.getOption2();
@@ -340,65 +347,126 @@ public class Question extends TestActivity {
         Timer.setBackground(drawable);
 
         isAnswered = false;
-        One.setText(option[0]);
-        One.setBackgroundColor(buttonColor);
-        One.setClickable(true);
-        Two.setText(option[1]);
-        Two.setBackgroundColor(buttonColor);
-        Two.setClickable(true);
-        Three.setText(option[2]);
-        Three.setBackgroundColor(buttonColor);
-        Three.setClickable(true);
-        Four.setText(option[3]);
-        Four.setBackgroundColor(buttonColor);
-        Four.setClickable(true);
+        compIsAnswered = false;
+        isCorrect = false;
+
+        if(score>compScore) {
+            compTime = ThreadLocalRandom.current().nextInt(750,1501);
+        }
+        else {
+            compTime = ThreadLocalRandom.current().nextInt(1000,3001);
+        }
+
         ScoreView.setTextColor(scoreColor);
         compScoreView.setTextColor(scoreColor);
         QuestionCounter++;
-        count = new Counter(11000,100);
-        count.start();
-        compTurn();
+
+        One.setText("");
+        One.setBackgroundColor(buttonColor);
+        Two.setText("");
+        Two.setBackgroundColor(buttonColor);
+        Three.setText("");
+        Three.setBackgroundColor(buttonColor);
+        Four.setText("");
+        Four.setBackgroundColor(buttonColor);
+
+        final Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                One.setText(option[0]);
+
+                One.setClickable(true);
+                Two.setText(option[1]);
+                Two.setClickable(true);
+                Three.setText(option[2]);
+                Three.setClickable(true);
+                Four.setText(option[3]);
+                Four.setClickable(true);
+
+                count = new Counter(11000,100);
+                count.start();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!isCorrect)
+                            compTurn();
+                    }
+                },compTime);
+            }
+        },1500);
+
     }
 
     private void compTurn() {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                int compAnsKey = ThreadLocalRandom.current().nextInt(0,4);
+        String[] compOption = new String[2];
 
-                switch(compAnsKey) {
-                    case 0:         compAnswer = One.getText().toString();
-                                    One.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
-                        break;
-                    case 1:         compAnswer = Two.getText().toString();
-                                    Two.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
-                        break;
-                    case 2:         compAnswer = Three.getText().toString();
-                                    Three.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
-                        break;
-                    case 3:         compAnswer = Four.getText().toString();
-                                    Four.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
-                        break;
-                }
+        int ansIndex=0;
 
-                if(compAnswer.equals(AnswerKey) && !isAnswered) {
-                    One.setClickable(false);
-                    Two.setClickable(false);
-                    Three.setClickable(false);
-                    Four.setClickable(false);
-                    compScore+=10;
-                    count.cancel();
-                    compScoreView.setText(String.valueOf(compScore));
-                    compScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                    answerCheck();
-                }
-
+        for(int i=0;i<4;i++) {
+            if(option[i].equals(AnswerKey)) {
+                compOption[0] = option[i];
+                ansIndex = i;
+                break;
             }
-        },compTime);
+        }
+
+        int compAnsKey = ansIndex;
+
+        while(compAnsKey==ansIndex) {
+            compAnsKey = ThreadLocalRandom.current().nextInt(0,4);
+        }
+
+        compOption[1] = option[compAnsKey];
+
+        compAnsKey = ThreadLocalRandom.current().nextInt(0,2);
+
+        if(score>compScore) {
+            compAnswer = compOption[0];
+        }
+        else {
+            if(compAnsKey == 0) {
+                compAnswer = compOption[0];
+            }
+            else {
+                compAnswer = compOption[1];
+            }
+        }
+
+        if(One.getText().equals(compAnswer)) {
+            One.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
+        }
+        else if(Two.getText().equals(compAnswer)) {
+            Two.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
+        }
+        else if(Three.getText().equals(compAnswer)) {
+            Three.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
+        }
+        else if(Four.getText().equals(compAnswer)) {
+            Four.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
+        }
+
+        compIsAnswered = true;
+
+        if(compAnswer.equals(AnswerKey)) {
+            One.setClickable(false);
+            Two.setClickable(false);
+            Three.setClickable(false);
+            Four.setClickable(false);
+            compScore+=10;
+            compScoreView.setText(String.valueOf(compScore));
+            compScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+            answerCheck();
+        }
+        else if(!compAnswer.equals(AnswerKey) && isAnswered) {
+            compScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+            answerCheck();
+        }
     }
 
     public void answerCheck() {
+        count.cancel();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -414,6 +482,7 @@ public class Question extends TestActivity {
                         intent.putExtra("POINTS",String.valueOf(score));
                         intent.putExtra("CPOINTS",String.valueOf(compScore));
                         startActivity(intent);
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -504,6 +573,7 @@ public class Question extends TestActivity {
                             intent.putExtra("POINTS",String.valueOf(score));
                             intent.putExtra("CPOINTS",String.valueOf(compScore));
                             startActivity(intent);
+                            finish();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

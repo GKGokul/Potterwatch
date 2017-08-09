@@ -5,18 +5,20 @@
     <color name="colorPrimaryDark">#996515</color>
     <color name="colorAccent">#DAA520</color>
 
-    <color name ="GryffindorPrimary">#740909</color>
+    <color name="GryffindorPrimary">#740909</color>
     <color name="HufflepuffPrimary">#ECB939</color>
-    <color name ="RavenclawPrimary">#222F5B</color>
+    <color name="RavenclawPrimary">#222F5B</color>
     <color name="SlytherinPrimary">#1A472A</color>
 
-    <color name ="GryffindorSecondary">#cc9900</color>
+    <color name="GryffindorSecondary">#cc9900</color>
     <color name="HufflepuffSecondary">#000000</color>
-    <color name ="RavenclawSecondary">#946B2D</color>
+    <color name="RavenclawSecondary">#946B2D</color>
     <color name="SlytherinSecondary">#AAAAAA</color>
 
     <color name="CorrectAnswer">#00FF0F</color>
     <color name="WrongAnswer">#FF0000</color>
     <color name="CompAnswer">#797D7F</color>
+
+    <color name="black_overlay">#66000000</color>
 
 </resources>

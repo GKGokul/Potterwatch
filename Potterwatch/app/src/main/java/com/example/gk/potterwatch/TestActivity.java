@@ -43,11 +43,21 @@ public class TestActivity extends AppCompatActivity {
 
         final Button pvp = (Button) findViewById(R.id.pvpbutton);
         final Button lan = (Button) findViewById(R.id.lanparty);
+        final Button drill = (Button) findViewById(R.id.training);
 
-        pvp.setOnClickListener(new View.OnClickListener() {
+        drill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TestActivity.this, Question.class);
+                intent.putExtra("KEY",trait);
+                startActivity(intent);
+            }
+        });
+
+        pvp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TestActivity.this, PvPStart.class);
                 intent.putExtra("KEY",trait);
                 startActivity(intent);
             }

@@ -3,4 +3,8 @@
     <string name="title_activity_sorting_hat">SortingHat</string>
     <string name="facebook_app_id">115224489100238</string>
     <string name="fb_login_protocol_scheme">fb115224489100238</string>
+
+    <string name="title_activity_question_pv_p">QuestionPvP</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

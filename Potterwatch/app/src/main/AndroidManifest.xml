@@ -43,7 +43,9 @@
         <activity android:name=".ColorPicker" />
         <activity android:name=".TestActivity" />
         <activity android:name=".Question" />
-        <activity android:name=".ResultPage"></activity>
+        <activity android:name=".ResultPage" />
+        <activity android:name=".PvPStart" />
+        <activity android:name=".QuestionPVP"></activity>
     </application>
 
 </manifest>

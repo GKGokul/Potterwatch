@@ -59,6 +59,7 @@ public class ResultPage extends AppCompatActivity {
         display.setText(finalScore);
         res.setText(result);
         Button replay = (Button) findViewById(R.id.restart);
+        Button choose = (Button) findViewById(R.id.game_mode);
 
         replay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,5 +69,15 @@ public class ResultPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        choose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ResultPage.this, TestActivity.class);
+                intent.putExtra("KEY",trait);
+                startActivity(intent);
+            }
+        });
+
     }
 }

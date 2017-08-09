@@ -26,7 +26,7 @@
         android:id="@+id/pvpbutton"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:layout_margin="32dp"/>
+        android:layout_margin="16dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -34,6 +34,17 @@
         android:layout_gravity="center_horizontal"
         android:text="LAN Party"
         android:id="@+id/lanparty"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Practice"
+        android:layout_margin="16dp"
+        android:id="@+id/training"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"/>
 

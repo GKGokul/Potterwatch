@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "469156804174",
+    "firebase_url": "https://potterwatch-58606668.firebaseio.com",
+    "project_id": "potterwatch-58606668",
+    "storage_bucket": "potterwatch-58606668.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469156804174:android:6d2fd9c922c1dccb",
+        "android_client_info": {
+          "package_name": "com.example.gk.potterwatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469156804174-gmlj8vc9jefidiiq6pgm7an9a8qagcjd.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "469156804174-sj4g5vni3aatrprobqp7cbtphihctun7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gk.potterwatch",
+            "certificate_hash": "56a83b22e3402d6ddf7b08e8ef7f5d7563044e87"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFlX33LzPN7eB31v8BDvaGRCP_BB72F5c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469156804174-gmlj8vc9jefidiiq6pgm7an9a8qagcjd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

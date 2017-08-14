@@ -69,6 +69,12 @@ public class Question extends TestActivity {
 
     public int compTime;
 
+    public String[] quotes = {"Happiness can be found even in the darkest of times, if only one remembers to turn on the light.",
+                              "It does not do to dwell on dreams and forget to live.",
+                              "Fear of a name only increases fear of the thing itself.",
+                              "It is the unknown we fear when we look upon death and darkness, nothing more.",
+                              "Things we lose have a way of coming back to us in the end, if not always in the way we expect.",
+                              "I solemnly swear that I am up to no good"};
 
     List<QuestionData> Object = new ArrayList<>();
 
@@ -291,7 +297,7 @@ public class Question extends TestActivity {
 
 
         protected void onPreExecute() {
-            this.dialog.setMessage("Loading...");   //Sets Dialog message
+            this.dialog.setMessage("I solemnly swear that I am up to no good.");   //Sets Dialog message
             this.dialog.show();     //Shows Dialog
         }
 
@@ -301,6 +307,7 @@ public class Question extends TestActivity {
             try {
                 extractDataFromJSON();
                 if(dialog.isShowing()) {
+                    Toast.makeText(Activity, "Mischief Managed!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();   //Dismisses dialog
                 }
                 updateUI();

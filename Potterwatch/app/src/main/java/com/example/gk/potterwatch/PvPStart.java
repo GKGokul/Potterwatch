@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
+import com.google.example.games.basegameutils.BaseGameUtils;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -314,6 +315,10 @@ public class PvPStart extends AppCompatActivity implements GoogleApiClient.Conne
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // show error message and return to main screen
+        Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(PvPStart.this, TestActivity.class);
+        intent.putExtra("KEY",trait);
+        startActivity(intent);
     }
 
     @Override

@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "/Users/adityaravichandran/Documents/GitHub/Potterwatch/Potterwatch/BaseGameUtils/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-w360dp-v13/values-w360dp-v13.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 54,
+                    "endOffset": 105
+                },
+                "from": {
+                    "file": "/Users/adityaravichandran/.android/build-cache/c2a3ee091ec257e15ff41200b91581fd44f85487/output/res/values-w360dp/values.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 56,
+                        "endColumn": 54,
+                        "endOffset": 106
+                    }
+                }
+            }
+        ]
+    }
+]

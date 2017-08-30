@@ -35,6 +35,15 @@
         android:text="LAN Party"
         android:id="@+id/lanparty"
         android:paddingLeft="32dp"
-        android:paddingRight="32dp"/>
+        android:paddingRight="32dp"
+        android:layout/>
+    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Training"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

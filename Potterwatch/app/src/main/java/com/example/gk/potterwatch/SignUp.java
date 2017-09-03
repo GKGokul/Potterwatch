@@ -1,11 +1,7 @@
 package com.example.gk.potterwatch;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.support.v7.app.AppCompatActivity;
 
 public class SignUp extends AppCompatActivity {
 

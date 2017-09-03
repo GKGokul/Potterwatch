@@ -73,12 +73,13 @@
         android:inputType="textPassword"
         android:padding="16dp"
         android:textAlignment="center" />
+
     <ImageView
 
+        android:id="@+id/stampOkay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/stampOkay"
         android:layout_below="@id/SUrepeatPassword"
-        android:src="@drawable/stamp"/>
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/stamp" />
 </RelativeLayout>

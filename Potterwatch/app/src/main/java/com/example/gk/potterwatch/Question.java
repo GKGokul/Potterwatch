@@ -99,18 +99,23 @@ public class Question extends TestActivity {
         }
         setContentView(R.layout.activity_question);
 
+        // Initializing view for question and the four options
         QuestionView = (TextView) findViewById(R.id.Question);
         One = (Button) findViewById(R.id.Option1);
         Two = (Button) findViewById(R.id.Option2);
         Three = (Button) findViewById(R.id.Option3);
         Four = (Button) findViewById(R.id.Option4);
+
+        //Initialize TODO: Complete here
         ColorDrawable initialButton = (ColorDrawable) One.getBackground();
+        //Initialize view for the score of the first player and opponent
         ScoreView = (TextView) findViewById(R.id.score);
         compScoreView = (TextView) findViewById(R.id.comp_score);
 
         buttonColor = initialButton.getColor();
         scoreColor = ScoreView.getCurrentTextColor();
 
+        // Initialize the timer
         Timer = (Button) findViewById(R.id.timer);
 
         drawable = Timer.getBackground();
@@ -277,7 +282,9 @@ public class Question extends TestActivity {
     }
 
     private class getQuestions extends AsyncTask<String, String, String> {
-        private ProgressDialog dialog;      //ProgressDialog declaration
+
+        //ProgressDialog declaration
+        private ProgressDialog dialog;
         android.app.Activity Activity;
 
         //Constructor to initialize progressDialog
@@ -291,8 +298,10 @@ public class Question extends TestActivity {
 
 
         protected void onPreExecute() {
-            this.dialog.setMessage("Loading...");   //Sets Dialog message
-            this.dialog.show();     //Shows Dialog
+            //Sets Dialog message
+            this.dialog.setMessage("Loading...");
+            //Shows Dialog
+            this.dialog.show();
         }
 
         @Override
@@ -301,7 +310,8 @@ public class Question extends TestActivity {
             try {
                 extractDataFromJSON();
                 if(dialog.isShowing()) {
-                    dialog.dismiss();   //Dismisses dialog
+                    //Dismisses dialog
+                    dialog.dismiss();
                 }
                 updateUI();
 
@@ -315,8 +325,6 @@ public class Question extends TestActivity {
         protected String doInBackground(String... params) {
             try {
                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).build();
-
-                //TODO: Change IP before running
 
                 Request request = new Request.Builder().url("https://potterwatch.herokuapp.com/questions").get().build();
                 Response response = client.newCall(request).execute();
@@ -386,6 +394,7 @@ public class Question extends TestActivity {
 
                 count = new Counter(11000,100);
                 count.start();
+
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -511,6 +520,7 @@ public class Question extends TestActivity {
 
     public class Counter extends CountDownTimer{
 
+
         /**
          * @param millisInFuture    The number of millis in the future from the call
          *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
@@ -528,7 +538,8 @@ public class Question extends TestActivity {
             Timer.setText(""+(millisUntilFinished/1000));
             if((millisUntilFinished/1000)<5){
                 Animation anim = new AlphaAnimation(0.0f, 1.0f);
-                anim.setDuration(50); //You can manage the blinking time with this parameter
+                //You can manage the blinking time with this parameter
+                anim.setDuration(50);
                 anim.setStartOffset(20);
                 anim.setRepeatMode(Animation.REVERSE);
                 anim.setRepeatCount(Animation.ABSOLUTE);

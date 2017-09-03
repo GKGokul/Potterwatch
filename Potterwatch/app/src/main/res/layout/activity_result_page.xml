@@ -3,35 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.gk.potterwatch.ResultPage">
 
     <TextView
+        android:id="@+id/result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:gravity="center"
-        android:id="@+id/result"
         android:layout_marginTop="100dp"
-        android:textSize="64dp"
-        />
+        android:gravity="center"
+        android:text=""
+        android:textSize="64dp" />
 
     <TextView
+        android:id="@+id/player_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/player_score"
-        android:gravity="center"
-        android:textSize="32dp"
         android:layout_margin="48dp"
-        />
+        android:gravity="center"
+        android:textSize="32dp" />
 
     <Button
+        android:id="@+id/restart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Play Again?"
         android:padding="24dp"
-        android:id="@+id/restart"/>
+        android:text="Play Again?" />
 
 </LinearLayout>

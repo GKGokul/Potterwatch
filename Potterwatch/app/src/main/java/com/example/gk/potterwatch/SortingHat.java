@@ -1,7 +1,7 @@
 package com.example.gk.potterwatch;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class SortingHat extends AppCompatActivity {
 

@@ -1,7 +1,9 @@
 package com.example.gk.potterwatch;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +23,7 @@ public class TestActivity extends AppCompatActivity {
     String trait = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
@@ -41,15 +43,31 @@ public class TestActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_test2);
 
-        final Button pvp = (Button) findViewById(R.id.pvpbutton);
-        final Button lan = (Button) findViewById(R.id.lanparty);
+        final CharSequence[] diff = {"Easy","Hard","Impossible"};
 
-        pvp.setOnClickListener(new View.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Difficulty");
+        builder.setItems(diff, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String difficulty = diff[i].toString();
                 Intent intent = new Intent(TestActivity.this, Question.class);
                 intent.putExtra("KEY",trait);
+                intent.putExtra("DIFF",difficulty);
                 startActivity(intent);
+            }
+        });
+
+        final AlertDialog alert = builder.create();
+
+        final Button pvp = (Button) findViewById(R.id.pvpbutton);
+        final Button lan = (Button) findViewById(R.id.lanparty);
+        final Button drill = (Button) findViewById(R.id.training);
+
+        drill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.show();
             }
         });
 

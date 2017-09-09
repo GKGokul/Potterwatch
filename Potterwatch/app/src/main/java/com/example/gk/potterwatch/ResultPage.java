@@ -1,8 +1,10 @@
 package com.example.gk.potterwatch;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +41,23 @@ public class ResultPage extends AppCompatActivity {
 
         }
         setContentView(R.layout.activity_result_page);
+
+        final CharSequence[] diff = {"Easy","Hard","Impossible"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Difficulty");
+        builder.setItems(diff, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String difficulty = diff[i].toString();
+                Intent intent = new Intent(ResultPage.this, Question.class);
+                intent.putExtra("KEY",trait);
+                intent.putExtra("DIFF",difficulty);
+                startActivity(intent);
+            }
+        });
+        final AlertDialog alert = builder.create();
+
         String score = extras.getString("POINTS","");
         String compScore = extras.getString("CPOINTS","");
         String finalScore = score+"-"+compScore;
@@ -63,9 +82,7 @@ public class ResultPage extends AppCompatActivity {
         replay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ResultPage.this,Question.class);
-                intent.putExtra("KEY",trait);
-                startActivity(intent);
+                alert.show();
             }
         });
     }

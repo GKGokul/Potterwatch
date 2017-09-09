@@ -60,6 +60,8 @@ public class Question extends TestActivity {
     public int buttonColor,scoreColor;
     public String[] option = new String[4];
 
+    public int timeMin,timeMax,despTimeMin,despTimeMax;
+
     public String jsonResult;
     private TextView QuestionView,ScoreView,compScoreView;
     private Button One, Two, Three, Four,Timer;
@@ -73,6 +75,7 @@ public class Question extends TestActivity {
     List<QuestionData> Object = new ArrayList<>();
 
     public String trait = "";
+    public String difficulty = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,28 @@ public class Question extends TestActivity {
             }
 
         }
+        difficulty = extras.getString("DIFF","");
+        switch(difficulty) {
+            case "Easy":
+                timeMin = 3000;
+                timeMax = 9000;
+                despTimeMax = 4000;
+                despTimeMin = 2000;
+                break;
+            case "Hard":
+                timeMin = 2000;
+                timeMax = 4000;
+                despTimeMax = 2000;
+                despTimeMin = 1000;
+                break;
+            case "Impossible":
+                timeMin = 1000;
+                timeMax = 2000;
+                despTimeMax = 1000;
+                despTimeMin = 500;
+
+        }
+
         setContentView(R.layout.activity_question);
 
         QuestionView = (TextView) findViewById(R.id.Question);
@@ -303,6 +328,7 @@ public class Question extends TestActivity {
                 if(dialog.isShowing()) {
                     dialog.dismiss();   //Dismisses dialog
                 }
+
                 updateUI();
 
             } catch (JSONException e) {
@@ -351,10 +377,10 @@ public class Question extends TestActivity {
         isCorrect = false;
 
         if(score>compScore) {
-            compTime = ThreadLocalRandom.current().nextInt(750,1501);
+            compTime = ThreadLocalRandom.current().nextInt(despTimeMin,despTimeMax);
         }
         else {
-            compTime = ThreadLocalRandom.current().nextInt(1000,3001);
+            compTime = ThreadLocalRandom.current().nextInt(timeMin,timeMax);
         }
 
         ScoreView.setTextColor(scoreColor);
@@ -572,6 +598,7 @@ public class Question extends TestActivity {
                             intent.putExtra("KEY",trait);
                             intent.putExtra("POINTS",String.valueOf(score));
                             intent.putExtra("CPOINTS",String.valueOf(compScore));
+                            intent.putExtra("DIFF",difficulty);
                             startActivity(intent);
                             finish();
                         }

@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.gk.potterwatch.TestActivity">
 
+
+    <TextView
+        android:id="@+id/HouseSelected"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+
+        android:text=""
+        android:textAlignment="center"
+        android:textSize="64dp" />
 
     <TextView
         android:id="@+id/PoisonTextView"
@@ -40,6 +50,7 @@
         android:text="LAN Party" />
 
     <Button
+        android:id="@+id/training"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lanparty"
@@ -48,4 +59,15 @@
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:text="Training" />
+
+    <Button
+        android:id="@+id/goAhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:text="Go Ahead "
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"/>
+
 </RelativeLayout>

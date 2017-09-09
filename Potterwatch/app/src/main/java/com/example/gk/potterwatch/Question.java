@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -19,6 +21,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +51,19 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+
+/*
+class Utility {
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+}
+*/
+
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class Question extends TestActivity {
@@ -98,187 +114,203 @@ public class Question extends TestActivity {
 
         }
         setContentView(R.layout.activity_question);
-
-        // Initializing view for question and the four options
-        QuestionView = (TextView) findViewById(R.id.Question);
-        One = (Button) findViewById(R.id.Option1);
-        Two = (Button) findViewById(R.id.Option2);
-        Three = (Button) findViewById(R.id.Option3);
-        Four = (Button) findViewById(R.id.Option4);
-
-        //Initialize TODO: Complete here
-        ColorDrawable initialButton = (ColorDrawable) One.getBackground();
-        //Initialize view for the score of the first player and opponent
-        ScoreView = (TextView) findViewById(R.id.score);
-        compScoreView = (TextView) findViewById(R.id.comp_score);
-
-        buttonColor = initialButton.getColor();
-        scoreColor = ScoreView.getCurrentTextColor();
-
-        // Initialize the timer
-        Timer = (Button) findViewById(R.id.timer);
-
-        drawable = Timer.getBackground();
-
-        if (QuestionCounter == 0) {
-            new getQuestions(Question.this).execute();
+        // USE THIS FOR ALERT:
+        //boolean status = Utility.isNetworkAvailable(Question.this);
+/*
+        if(status == false)
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setMessage("Please connect to the internet");
+            alert.show();
         }
 
-        One.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        else
+        {
 
-                String ans = One.getText().toString();
 
-                isAnswered = true;
-                One.setClickable(false);
-                Two.setClickable(false);
-                Three.setClickable(false);
-                Four.setClickable(false);
+*/
+            // Initializing view for question and the four options
+            QuestionView = (TextView) findViewById(R.id.Question);
+            One = (Button) findViewById(R.id.Option1);
+            Two = (Button) findViewById(R.id.Option2);
+            Three = (Button) findViewById(R.id.Option3);
+            Four = (Button) findViewById(R.id.Option4);
 
-                if (AnswerKey.equals(ans)) {
-                    One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    isCorrect = true;
-                    score += 10;
-                    ScoreView.setText(String.valueOf(score));
-                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                    answerCheck();
-                } else {
-                    One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
-                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+            //Initialize TODO: Complete here
+            ColorDrawable initialButton = (ColorDrawable) One.getBackground();
+            //Initialize view for the score of the first player and opponent
+            ScoreView = (TextView) findViewById(R.id.score);
+            compScoreView = (TextView) findViewById(R.id.comp_score);
 
-                    if(Two.getText().toString().equals(AnswerKey)) {
-                        Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    else if(Three.getText().toString().equals(AnswerKey)) {
-                        Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    else if(Four.getText().toString().equals(AnswerKey)){
-                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
+            buttonColor = initialButton.getColor();
+            scoreColor = ScoreView.getCurrentTextColor();
 
-                    if(compIsAnswered) {
-                        answerCheck();
-                    }
-                }
+            // Initialize the timer
+            Timer = (Button) findViewById(R.id.timer);
+
+            drawable = Timer.getBackground();
+
+            if (QuestionCounter == 0) {
+                new getQuestions(Question.this).execute();
             }
-        });
 
-        Two.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            One.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                isAnswered = true;
-                One.setClickable(false);
-                Two.setClickable(false);
-                Three.setClickable(false);
-                Four.setClickable(false);
+                    String ans = One.getText().toString();
 
-                String ans = Two.getText().toString();
+                    isAnswered = true;
+                    One.setClickable(false);
+                    Two.setClickable(false);
+                    Three.setClickable(false);
+                    Four.setClickable(false);
 
-                if (AnswerKey.equals(ans)) {
-                    Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    isCorrect = true;
-                    score += 10;
-                    ScoreView.setText(String.valueOf(score));
-                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                    answerCheck();
-                } else {
-                    Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
-                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-
-                    if(One.getText().toString().equals(AnswerKey)) {
+                    if (AnswerKey.equals(ans)) {
                         One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    else if(Three.getText().toString().equals(AnswerKey)) {
-                        Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    else if(Four.getText().toString().equals(AnswerKey)){
-                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    if(compIsAnswered) {
+                        isCorrect = true;
+                        score += 10;
+                        ScoreView.setText(String.valueOf(score));
+                        ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
                         answerCheck();
+                    } else {
+                        One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                        ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+
+                        if(Two.getText().toString().equals(AnswerKey)) {
+                            Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        else if(Three.getText().toString().equals(AnswerKey)) {
+                            Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        else if(Four.getText().toString().equals(AnswerKey)){
+                            Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+
+                        if(compIsAnswered) {
+                            answerCheck();
+                        }
                     }
                 }
+            });
 
-            }
-        });
+            Two.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        Three.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    isAnswered = true;
+                    One.setClickable(false);
+                    Two.setClickable(false);
+                    Three.setClickable(false);
+                    Four.setClickable(false);
 
-                isAnswered = true;
-                One.setClickable(false);
-                Two.setClickable(false);
-                Three.setClickable(false);
-                Four.setClickable(false);
+                    String ans = Two.getText().toString();
 
-                String ans = Three.getText().toString();
-
-                if (AnswerKey.equals(ans)) {
-                    Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    isCorrect = true;
-                    score += 10;
-                    ScoreView.setText(String.valueOf(score));
-                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                    answerCheck();
-                } else {
-                    Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
-                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-
-                    if (Two.getText().toString().equals(AnswerKey)) {
+                    if (AnswerKey.equals(ans)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    } else if (One.getText().toString().equals(AnswerKey)) {
-                        One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    } else if (Four.getText().toString().equals(AnswerKey)) {
-                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    if(compIsAnswered) {
+                        isCorrect = true;
+                        score += 10;
+                        ScoreView.setText(String.valueOf(score));
+                        ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
                         answerCheck();
+                    } else {
+                        Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                        ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+
+                        if(One.getText().toString().equals(AnswerKey)) {
+                            One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        else if(Three.getText().toString().equals(AnswerKey)) {
+                            Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        else if(Four.getText().toString().equals(AnswerKey)){
+                            Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        if(compIsAnswered) {
+                            answerCheck();
+                        }
                     }
+
                 }
-            }
-        });
+            });
 
-        Four.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            Three.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                isAnswered = true;
-                One.setClickable(false);
-                Two.setClickable(false);
-                Three.setClickable(false);
-                Four.setClickable(false);
+                    isAnswered = true;
+                    One.setClickable(false);
+                    Two.setClickable(false);
+                    Three.setClickable(false);
+                    Four.setClickable(false);
 
-                String ans = Four.getText().toString();
+                    String ans = Three.getText().toString();
 
-                if (AnswerKey.equals(ans)) {
-                    Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    isCorrect = true;
-                    score += 10;
-                    ScoreView.setText(String.valueOf(score));
-                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                    answerCheck();
-
-                } else {
-                    Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
-                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                    if(Two.getText().toString().equals(AnswerKey)) {
-                        Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    else if(Three.getText().toString().equals(AnswerKey)) {
+                    if (AnswerKey.equals(ans)) {
                         Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    else if(One.getText().toString().equals(AnswerKey)){
-                        One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                    }
-                    if(compIsAnswered) {
+                        isCorrect = true;
+                        score += 10;
+                        ScoreView.setText(String.valueOf(score));
+                        ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
                         answerCheck();
+                    } else {
+                        Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                        ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+
+                        if (Two.getText().toString().equals(AnswerKey)) {
+                            Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        } else if (One.getText().toString().equals(AnswerKey)) {
+                            One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        } else if (Four.getText().toString().equals(AnswerKey)) {
+                            Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        if(compIsAnswered) {
+                            answerCheck();
+                        }
                     }
                 }
-            }
-        });
+            });
+
+            Four.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    isAnswered = true;
+                    One.setClickable(false);
+                    Two.setClickable(false);
+                    Three.setClickable(false);
+                    Four.setClickable(false);
+
+                    String ans = Four.getText().toString();
+
+                    if (AnswerKey.equals(ans)) {
+                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        isCorrect = true;
+                        score += 10;
+                        ScoreView.setText(String.valueOf(score));
+                        ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                        answerCheck();
+
+                    } else {
+                        Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                        ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+                        if(Two.getText().toString().equals(AnswerKey)) {
+                            Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        else if(Three.getText().toString().equals(AnswerKey)) {
+                            Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        else if(One.getText().toString().equals(AnswerKey)){
+                            One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                        }
+                        if(compIsAnswered) {
+                            answerCheck();
+                        }
+                    }
+                }
+            });
+
+      //  }
     }
 
     private class getQuestions extends AsyncTask<String, String, String> {

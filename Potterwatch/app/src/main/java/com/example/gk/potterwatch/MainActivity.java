@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            Intent intent = new Intent(MainActivity.this, ColorPicker.class);
+            Intent intent = new Intent(MainActivity.this, SortingHat.class);
             startActivity(intent);
             finish();
         } else {

@@ -109,11 +109,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         mAuth = FirebaseAuth.getInstance();
 
+        /*
         if (isLoggedIn()) {
             Intent i = new Intent(MainActivity.this, ColorPicker.class);
             startActivity(i);
             finish();
         }
+        */
 
         //Creating the ALOHOMORA and Muggle? Sign up here button
         final Button buttonAlohomora = (Button) findViewById(R.id.alohomora);

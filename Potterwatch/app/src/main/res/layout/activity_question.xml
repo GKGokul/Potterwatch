@@ -102,6 +102,15 @@
             android:layout_margin="8dp"
             android:text="Option 4" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:text="Defend"
+            android:id="@+id/pounce"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 

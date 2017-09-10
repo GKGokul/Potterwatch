@@ -2,11 +2,9 @@ package com.example.gk.potterwatch;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,36 +13,28 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Looper;
 
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import junit.framework.Test;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -73,22 +63,29 @@ public class Question extends TestActivity {
     public int score = 0;
     public int compScore = 0;
     public String AnswerKey;
-    public int buttonColor,scoreColor;
+    public int buttonColor, scoreColor;
     public String[] option = new String[4];
 
+    public int timeMin, timeMax, despTimeMin, despTimeMax;
+
     public String jsonResult;
-    private TextView QuestionView,ScoreView,compScoreView;
-    private Button One, Two, Three, Four,Timer;
+    private TextView QuestionView, ScoreView, compScoreView;
+    private Button One, Two, Three, Four, Timer, Pounce;
     Drawable drawable;
     public String compAnswer;
-    public boolean isAnswered,compIsAnswered,isCorrect;
+    public boolean isAnswered, isCompPounce, isPounce, compIsAnswered, isCorrect, isPlayerTurn = false, isCalled = false;
 
+    public boolean[] pouncer = {false, false, false, false};
     public int compTime;
 
+    public boolean snitchAnswered = false;
+    public boolean isSnitch = false;
+    public int snitchIndex = ThreadLocalRandom.current().nextInt(5, 10);
 
     List<QuestionData> Object = new ArrayList<>();
 
     public String trait = "";
+    public String difficulty = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +110,34 @@ public class Question extends TestActivity {
             }
 
         }
+        difficulty = extras.getString("DIFF", "");
+        switch (difficulty) {
+            case "Easy":
+                timeMin = 3000;
+                timeMax = 9000;
+                despTimeMax = 4000;
+                despTimeMin = 2000;
+                pouncer[0] = true;
+                break;
+            case "Hard":
+                timeMin = 2000;
+                timeMax = 4000;
+                despTimeMax = 2000;
+                despTimeMin = 1000;
+                pouncer[0] = true;
+                pouncer[1] = true;
+                break;
+            case "Impossible":
+                timeMin = 1000;
+                timeMax = 2000;
+                despTimeMax = 1000;
+                despTimeMin = 500;
+                pouncer[0] = true;
+                pouncer[1] = true;
+                pouncer[2] = true;
+                break;
+        }
+
         setContentView(R.layout.activity_question);
         // USE THIS FOR ALERT:
         //boolean status = Utility.isNetworkAvailable(Question.this);
@@ -124,193 +149,238 @@ public class Question extends TestActivity {
             alert.show();
         }
 
+<<<<<<< HEAD
         else
         {
+=======
+        QuestionView = (TextView) findViewById(R.id.Question);
+        One = (Button) findViewById(R.id.Option1);
+        Two = (Button) findViewById(R.id.Option2);
+        Three = (Button) findViewById(R.id.Option3);
+        Four = (Button) findViewById(R.id.Option4);
+        Pounce = (Button) findViewById(R.id.pounce);
+        ColorDrawable initialButton = (ColorDrawable) One.getBackground();
+        ScoreView = (TextView) findViewById(R.id.score);
+        compScoreView = (TextView) findViewById(R.id.comp_score);
+>>>>>>> difficulty
 
 
 */
-            // Initializing view for question and the four options
-            QuestionView = (TextView) findViewById(R.id.Question);
-            One = (Button) findViewById(R.id.Option1);
-            Two = (Button) findViewById(R.id.Option2);
-            Three = (Button) findViewById(R.id.Option3);
-            Four = (Button) findViewById(R.id.Option4);
+        // Initializing view for question and the four options
+        QuestionView = (TextView) findViewById(R.id.Question);
+        One = (Button) findViewById(R.id.Option1);
+        Two = (Button) findViewById(R.id.Option2);
+        Three = (Button) findViewById(R.id.Option3);
+        Four = (Button) findViewById(R.id.Option4);
+        Pounce = (Button) findViewById(R.id.pounce);
 
-            //Initialize TODO: Complete here
-            ColorDrawable initialButton = (ColorDrawable) One.getBackground();
-            //Initialize view for the score of the first player and opponent
-            ScoreView = (TextView) findViewById(R.id.score);
-            compScoreView = (TextView) findViewById(R.id.comp_score);
+        //Initialize TODO: Complete here
+        ColorDrawable initialButton = (ColorDrawable) One.getBackground();
+        //Initialize view for the score of the first player and opponent
+        ScoreView = (TextView) findViewById(R.id.score);
+        compScoreView = (TextView) findViewById(R.id.comp_score);
 
-            buttonColor = initialButton.getColor();
-            scoreColor = ScoreView.getCurrentTextColor();
+        buttonColor = initialButton.getColor();
+        scoreColor = ScoreView.getCurrentTextColor();
 
-            // Initialize the timer
-            Timer = (Button) findViewById(R.id.timer);
+        // Initialize the timer
+        Timer = (Button) findViewById(R.id.timer);
 
-            drawable = Timer.getBackground();
+        drawable = Timer.getBackground();
 
-            if (QuestionCounter == 0) {
-                new getQuestions(Question.this).execute();
+        if (QuestionCounter == 0) {
+            new getQuestions(Question.this).execute();
+        }
+
+        Pounce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                One.setClickable(true);
+                Two.setClickable(true);
+                Three.setClickable(true);
+                Four.setClickable(true);
+                One.setVisibility(View.VISIBLE);
+                Two.setVisibility(View.VISIBLE);
+                Three.setVisibility(View.VISIBLE);
+                Four.setVisibility(View.VISIBLE);
+                isPounce = true;
+                Pounce.setVisibility(View.GONE);
             }
+        });
 
-            One.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        One.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    String ans = One.getText().toString();
+                String ans = One.getText().toString();
 
-                    isAnswered = true;
-                    One.setClickable(false);
-                    Two.setClickable(false);
-                    Three.setClickable(false);
-                    Four.setClickable(false);
+                isAnswered = true;
+                One.setClickable(false);
+                Two.setClickable(false);
+                Three.setClickable(false);
+                Four.setClickable(false);
 
-                    if (AnswerKey.equals(ans)) {
-                        One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        isCorrect = true;
-                        score += 10;
-                        ScoreView.setText(String.valueOf(score));
-                        ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                        answerCheck();
+                if (AnswerKey.equals(ans)) {
+                    One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    isCorrect = true;
+                    if (isSnitch) {
+                        score += 150;
+                        snitchAnswered = true;
                     } else {
-                        One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
-                        ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-
-                        if(Two.getText().toString().equals(AnswerKey)) {
-                            Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-                        else if(Three.getText().toString().equals(AnswerKey)) {
-                            Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-                        else if(Four.getText().toString().equals(AnswerKey)){
-                            Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-
-                        if(compIsAnswered) {
-                            answerCheck();
-                        }
+                        score += 10;
                     }
-                }
-            });
+                    ScoreView.setText(String.valueOf(score));
+                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
+                } else {
+                    One.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
 
-            Two.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    isAnswered = true;
-                    One.setClickable(false);
-                    Two.setClickable(false);
-                    Three.setClickable(false);
-                    Four.setClickable(false);
-
-                    String ans = Two.getText().toString();
-
-                    if (AnswerKey.equals(ans)) {
+                    if (Two.getText().toString().equals(AnswerKey)) {
                         Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        isCorrect = true;
-                        score += 10;
-                        ScoreView.setText(String.valueOf(score));
-                        ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                        answerCheck();
-                    } else {
-                        Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
-                        ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+                    } else if (Three.getText().toString().equals(AnswerKey)) {
+                        Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    } else if (Four.getText().toString().equals(AnswerKey)) {
+                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
 
-                        if(One.getText().toString().equals(AnswerKey)) {
-                            One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-                        else if(Three.getText().toString().equals(AnswerKey)) {
-                            Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-                        else if(Four.getText().toString().equals(AnswerKey)){
-                            Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-                        if(compIsAnswered) {
-                            answerCheck();
-                        }
+                    if (!isCompPounce || compIsAnswered) {
+                        isCalled = !isCalled;
+                        answerCheck();
+                    }
+                }
+            }
+        });
+
+        Two.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                isAnswered = true;
+                One.setClickable(false);
+                Two.setClickable(false);
+                Three.setClickable(false);
+                Four.setClickable(false);
+
+                String ans = Two.getText().toString();
+
+                if (AnswerKey.equals(ans)) {
+                    Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    isCorrect = true;
+                    if (isSnitch) {
+                        score += 150;
+                        snitchAnswered = true;
+                    } else {
+                        score += 10;
+                    }
+                    ScoreView.setText(String.valueOf(score));
+                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
+                } else {
+                    Two.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+
+                    if (One.getText().toString().equals(AnswerKey)) {
+                        One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    } else if (Three.getText().toString().equals(AnswerKey)) {
+                        Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    } else if (Four.getText().toString().equals(AnswerKey)) {
+                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    if (!isCompPounce || compIsAnswered) {
+                        isCalled = !isCalled;
+                        answerCheck();
+                    }
+                }
+            }
+        });
+
+        Three.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                isAnswered = true;
+                One.setClickable(false);
+                Two.setClickable(false);
+                Three.setClickable(false);
+                Four.setClickable(false);
+
+                String ans = Three.getText().toString();
+
+                if (AnswerKey.equals(ans)) {
+                    Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    isCorrect = true;
+                    if (isSnitch) {
+                        score += 150;
+                        snitchAnswered = true;
+                    } else {
+                        score += 10;
+                    }
+                    ScoreView.setText(String.valueOf(score));
+                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
+                } else {
+                    Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+
+                    if (Two.getText().toString().equals(AnswerKey)) {
+                        Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    } else if (One.getText().toString().equals(AnswerKey)) {
+                        One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    } else if (Four.getText().toString().equals(AnswerKey)) {
+                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    }
+                    if (!isCompPounce || compIsAnswered) {
+                        isCalled = !isCalled;
+                        answerCheck();
                     }
 
                 }
-            });
+            }
+        });
 
-            Three.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        Four.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    isAnswered = true;
-                    One.setClickable(false);
-                    Two.setClickable(false);
-                    Three.setClickable(false);
-                    Four.setClickable(false);
+                isAnswered = true;
+                One.setClickable(false);
+                Two.setClickable(false);
+                Three.setClickable(false);
+                Four.setClickable(false);
 
-                    String ans = Three.getText().toString();
+                String ans = Four.getText().toString();
 
-                    if (AnswerKey.equals(ans)) {
-                        Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        isCorrect = true;
-                        score += 10;
-                        ScoreView.setText(String.valueOf(score));
-                        ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                        answerCheck();
+                if (AnswerKey.equals(ans)) {
+                    Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
+                    isCorrect = true;
+                    if (isSnitch) {
+                        score += 150;
+                        snitchAnswered = true;
                     } else {
-                        Three.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
-                        ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
+                        score += 10;
+                    }
+                    ScoreView.setText(String.valueOf(score));
+                    ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
+                    answerCheck();
 
+                } else {
+                    Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
+                    ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
                         if (Two.getText().toString().equals(AnswerKey)) {
                             Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                         } else if (One.getText().toString().equals(AnswerKey)) {
                             One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        } else if (Four.getText().toString().equals(AnswerKey)) {
-                            Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-                        if(compIsAnswered) {
-                            answerCheck();
-                        }
-                    }
-                }
-            });
-
-            Four.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    isAnswered = true;
-                    One.setClickable(false);
-                    Two.setClickable(false);
-                    Three.setClickable(false);
-                    Four.setClickable(false);
-
-                    String ans = Four.getText().toString();
-
-                    if (AnswerKey.equals(ans)) {
-                        Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        isCorrect = true;
-                        score += 10;
-                        ScoreView.setText(String.valueOf(score));
-                        ScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
-                        answerCheck();
-
-                    } else {
-                        Four.setBackgroundColor(getResources().getColor(R.color.WrongAnswer));
-                        ScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-                        if(Two.getText().toString().equals(AnswerKey)) {
-                            Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-                        else if(Three.getText().toString().equals(AnswerKey)) {
+                        } else if (Three.getText().toString().equals(AnswerKey)) {
                             Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
                         }
-                        else if(One.getText().toString().equals(AnswerKey)){
-                            One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-                        }
-                        if(compIsAnswered) {
+                        if (!isCompPounce || compIsAnswered) {
+                            isCalled = !isCalled;
                             answerCheck();
                         }
-                    }
                 }
-            });
-
-      //  }
+            }
+        });
     }
 
     private class getQuestions extends AsyncTask<String, String, String> {
@@ -341,10 +411,11 @@ public class Question extends TestActivity {
             super.onPostExecute(s);
             try {
                 extractDataFromJSON();
-                if(dialog.isShowing()) {
+                if (dialog.isShowing()) {
                     //Dismisses dialog
                     dialog.dismiss();
                 }
+
                 updateUI();
 
             } catch (JSONException e) {
@@ -369,13 +440,14 @@ public class Question extends TestActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void updateUI() throws JSONException {
+
 
         QuestionData temp = Object.get(QuestionCounter);
         AnswerKey = temp.getAnswer();
         QuestionView.setText(temp.getQuestion());
+
+        Pounce.setVisibility(View.GONE);
 
         option[0] = temp.getOption1();
         option[1] = temp.getOption2();
@@ -386,20 +458,27 @@ public class Question extends TestActivity {
 
         Timer.setBackground(drawable);
 
+        isSnitch = false;
         isAnswered = false;
         compIsAnswered = false;
         isCorrect = false;
+        isPlayerTurn = !isPlayerTurn;
+        isPounce = false;
+        if (isPlayerTurn)
+            isCompPounce = pouncer[ThreadLocalRandom.current().nextInt(0, 4)];
+        else isCompPounce = false;
 
-        if(score>compScore) {
-            compTime = ThreadLocalRandom.current().nextInt(750,1501);
-        }
-        else {
-            compTime = ThreadLocalRandom.current().nextInt(1000,3001);
-        }
+
+        compTime = ThreadLocalRandom.current().nextInt(timeMin, timeMax);
 
         ScoreView.setTextColor(scoreColor);
         compScoreView.setTextColor(scoreColor);
         QuestionCounter++;
+
+        if (QuestionCounter == snitchIndex) {
+            isSnitch = true;
+            snitchIndex = ThreadLocalRandom.current().nextInt(snitchIndex + 5, snitchIndex + 10);
+        }
 
         One.setText("");
         One.setBackgroundColor(buttonColor);
@@ -410,43 +489,74 @@ public class Question extends TestActivity {
         Four.setText("");
         Four.setBackgroundColor(buttonColor);
 
+        if (isPlayerTurn || isSnitch) {
+            One.setVisibility(View.VISIBLE);
+            Two.setVisibility(View.VISIBLE);
+            Three.setVisibility(View.VISIBLE);
+            Four.setVisibility(View.VISIBLE);
+            Pounce.setVisibility(View.GONE);
+        } else {
+            One.setClickable(false);
+            Two.setClickable(false);
+            Three.setClickable(false);
+            Four.setClickable(false);
+            Pounce.setClickable(true);
+            One.setVisibility(View.GONE);
+            Two.setVisibility(View.GONE);
+            Three.setVisibility(View.GONE);
+            Four.setVisibility(View.GONE);
+            Pounce.setVisibility(View.VISIBLE);
+        }
+
         final Handler h = new Handler();
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                if (isPlayerTurn || isSnitch) {
+                    One.setClickable(true);
+                    Two.setClickable(true);
+                    Three.setClickable(true);
+                    Four.setClickable(true);
+                }
+
                 One.setText(option[0]);
-
-                One.setClickable(true);
                 Two.setText(option[1]);
-                Two.setClickable(true);
                 Three.setText(option[2]);
-                Three.setClickable(true);
                 Four.setText(option[3]);
-                Four.setClickable(true);
 
-                count = new Counter(11000,100);
+                count = new Counter(11000, 100);
                 count.start();
 
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(!isCorrect)
+                        if ((isCompPounce && !isCorrect)) {
                             compTurn();
+                        } else if (!isCorrect && !isPlayerTurn) {
+                            compTurn();
+                        }
                     }
-                },compTime);
+                }, compTime);
             }
-        },1500);
+        }, 2000);
 
     }
 
     private void compTurn() {
         String[] compOption = new String[2];
 
-        int ansIndex=0;
+        One.setClickable(false);
+        Two.setClickable(false);
+        Three.setClickable(false);
+        Four.setClickable(false);
+        Pounce.setClickable(false);
 
-        for(int i=0;i<4;i++) {
-            if(option[i].equals(AnswerKey)) {
+        int ansIndex = 0;
+
+        for (int i = 0; i < 4; i++) {
+            if (option[i].equals(AnswerKey)) {
                 compOption[0] = option[i];
                 ansIndex = i;
                 break;
@@ -455,73 +565,80 @@ public class Question extends TestActivity {
 
         int compAnsKey = ansIndex;
 
-        while(compAnsKey==ansIndex) {
-            compAnsKey = ThreadLocalRandom.current().nextInt(0,4);
+        while (compAnsKey == ansIndex) {
+            compAnsKey = ThreadLocalRandom.current().nextInt(0, 4);
         }
 
         compOption[1] = option[compAnsKey];
 
-        compAnsKey = ThreadLocalRandom.current().nextInt(0,2);
+        compAnsKey = ThreadLocalRandom.current().nextInt(0, 2);
 
-        if(score>compScore) {
+        if (score > compScore) {
             compAnswer = compOption[0];
-        }
-        else {
-            if(compAnsKey == 0) {
+        } else {
+            if (compAnsKey == 0) {
                 compAnswer = compOption[0];
-            }
-            else {
+            } else {
                 compAnswer = compOption[1];
             }
         }
 
-        if(One.getText().equals(compAnswer)) {
+        if (One.getText().equals(compAnswer)) {
             One.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
-        }
-        else if(Two.getText().equals(compAnswer)) {
+        } else if (Two.getText().equals(compAnswer)) {
             Two.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
-        }
-        else if(Three.getText().equals(compAnswer)) {
+        } else if (Three.getText().equals(compAnswer)) {
             Three.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
-        }
-        else if(Four.getText().equals(compAnswer)) {
+        } else if (Four.getText().equals(compAnswer)) {
             Four.setBackgroundColor(getResources().getColor(R.color.CompAnswer));
         }
 
         compIsAnswered = true;
 
-        if(compAnswer.equals(AnswerKey)) {
+        if (compAnswer.equals(AnswerKey)) {
             One.setClickable(false);
             Two.setClickable(false);
             Three.setClickable(false);
             Four.setClickable(false);
-            compScore+=10;
+            Pounce.setClickable(false);
+            if (isSnitch) {
+                compScore += 150;
+                snitchAnswered = true;
+            } else {
+                compScore += 10;
+            }
             compScoreView.setText(String.valueOf(compScore));
             compScoreView.setTextColor(getResources().getColor(R.color.CorrectAnswer));
             answerCheck();
-        }
-        else if(!compAnswer.equals(AnswerKey) && isAnswered) {
+        } else if (!compAnswer.equals(AnswerKey)) {
+            One.setClickable(true);
+            Two.setClickable(true);
+            Three.setClickable(true);
+            Four.setClickable(true);
             compScoreView.setTextColor(getResources().getColor(R.color.WrongAnswer));
-            answerCheck();
+            if (!isPounce || !isCorrect) {
+                isCalled = !isCalled;
+                answerCheck();
+            }
         }
     }
 
     public void answerCheck() {
+
         count.cancel();
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
-
-                    if (QuestionCounter < 10) {
+                    if (!snitchAnswered) {
                         updateUI();
-
-                    } else {
-                        Intent intent = new Intent(Question.this,ResultPage.class);
-                        intent.putExtra("KEY",trait);
-                        intent.putExtra("POINTS",String.valueOf(score));
-                        intent.putExtra("CPOINTS",String.valueOf(compScore));
+                    } else if (snitchAnswered) {
+                        Intent intent = new Intent(Question.this, ResultPage.class);
+                        intent.putExtra("KEY", trait);
+                        intent.putExtra("POINTS", String.valueOf(score));
+                        intent.putExtra("CPOINTS", String.valueOf(compScore));
                         startActivity(intent);
                         finish();
                     }
@@ -535,7 +652,7 @@ public class Question extends TestActivity {
     private void extractDataFromJSON() throws JSONException {
         JSONArray array = new JSONArray(jsonResult);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 40; i++) {
             JSONObject questions = array.getJSONObject(i);
             JSONObject questionObject = questions.getJSONObject("questions");
             String q, o1, o2, o3, o4, ans;
@@ -550,7 +667,7 @@ public class Question extends TestActivity {
         }
     }
 
-    public class Counter extends CountDownTimer{
+    public class Counter extends CountDownTimer {
 
 
         /**
@@ -566,9 +683,9 @@ public class Question extends TestActivity {
         }
 
         @Override
-        public void onTick(long millisUntilFinished){
-            Timer.setText(""+(millisUntilFinished/1000));
-            if((millisUntilFinished/1000)<5){
+        public void onTick(long millisUntilFinished) {
+            Timer.setText("" + (millisUntilFinished / 1000));
+            if ((millisUntilFinished / 1000) < 5) {
                 Animation anim = new AlphaAnimation(0.0f, 1.0f);
                 //You can manage the blinking time with this parameter
                 anim.setDuration(50);
@@ -578,9 +695,8 @@ public class Question extends TestActivity {
                 Timer.startAnimation(anim);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     Timer.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_shape));
-                }
-                else {
-                    Timer.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.red_shape));
+                } else {
+                    Timer.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_shape));
                 }
             }
         }
@@ -588,16 +704,13 @@ public class Question extends TestActivity {
         @Override
         public void onFinish() {
             Timer.setText("0");
-            if(Two.getText().toString().equals(AnswerKey)) {
+            if (Two.getText().toString().equals(AnswerKey)) {
                 Two.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-            }
-            else if(Three.getText().toString().equals(AnswerKey)) {
+            } else if (Three.getText().toString().equals(AnswerKey)) {
                 Three.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-            }
-            else if(One.getText().toString().equals(AnswerKey)){
+            } else if (One.getText().toString().equals(AnswerKey)) {
                 One.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
-            }
-            else if(Four.getText().toString().equals(AnswerKey)) {
+            } else if (Four.getText().toString().equals(AnswerKey)) {
                 Four.setBackgroundColor(getResources().getColor(R.color.CorrectAnswer));
             }
 
@@ -607,14 +720,15 @@ public class Question extends TestActivity {
                 public void run() {
                     try {
 
-                        if (QuestionCounter < 10) {
+                        if (!snitchAnswered) {
                             updateUI();
 
                         } else {
-                            Intent intent = new Intent(Question.this,ResultPage.class);
-                            intent.putExtra("KEY",trait);
-                            intent.putExtra("POINTS",String.valueOf(score));
-                            intent.putExtra("CPOINTS",String.valueOf(compScore));
+                            Intent intent = new Intent(Question.this, ResultPage.class);
+                            intent.putExtra("KEY", trait);
+                            intent.putExtra("POINTS", String.valueOf(score));
+                            intent.putExtra("CPOINTS", String.valueOf(compScore));
+                            intent.putExtra("DIFF", difficulty);
                             startActivity(intent);
                             finish();
                         }
@@ -625,5 +739,4 @@ public class Question extends TestActivity {
             }, 3000);
         }
     }
-
 }

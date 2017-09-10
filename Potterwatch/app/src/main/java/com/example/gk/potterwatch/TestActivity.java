@@ -4,6 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,7 +27,7 @@ public class TestActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
@@ -52,17 +59,34 @@ public class TestActivity extends AppCompatActivity {
                 updateUI();
             }
         });
+        final CharSequence[] diff = {"Easy","Hard","Impossible"};
 
-        pvp.setOnClickListener(new View.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Difficulty");
+        builder.setItems(diff, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String difficulty = diff[i].toString();
                 Intent intent = new Intent(TestActivity.this, Question.class);
-                intent.putExtra("KEY", trait);
+                intent.putExtra("KEY",trait);
+                intent.putExtra("DIFF",difficulty);
                 startActivity(intent);
                 finish();
             }
         });
 
+        final AlertDialog alert = builder.create();
+
+        final Button pvp = (Button) findViewById(R.id.pvpbutton);
+        final Button lan = (Button) findViewById(R.id.lanparty);
+        final Button drill = (Button) findViewById(R.id.training);
+
+        drill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.show();
+            }
+        });
 
     }
 
@@ -91,7 +115,6 @@ public class TestActivity extends AppCompatActivity {
         poisonview.setVisibility(View.VISIBLE);
         house.setVisibility(View.GONE);
         ahead.setVisibility(View.GONE);
-
     }
 
 }

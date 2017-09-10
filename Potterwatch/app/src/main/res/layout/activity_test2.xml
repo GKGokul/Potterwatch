@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context="com.example.gk.potterwatch.TestActivity">
 
-
     <TextView
         android:id="@+id/HouseSelected"
         android:layout_width="match_parent"
@@ -37,6 +36,7 @@
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:text="Online PvP" />
+        android:layout_margin="16dp"/>
 
     <Button
         android:id="@+id/lanparty"
@@ -48,6 +48,7 @@
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:text="LAN Party" />
+        android:layout_margin="16dp"/>
 
     <Button
         android:id="@+id/training"

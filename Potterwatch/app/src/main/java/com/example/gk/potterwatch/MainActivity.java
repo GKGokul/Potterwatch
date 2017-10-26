@@ -172,8 +172,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     //To check if user is signed in already
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        //FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
     }
 
     @Override

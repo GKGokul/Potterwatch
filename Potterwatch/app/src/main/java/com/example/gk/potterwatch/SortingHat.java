@@ -220,6 +220,7 @@ public class SortingHat extends AppCompatActivity {
         Intent test = new Intent(SortingHat.this, TestActivity.class);
         test.putExtra("KEY", Houses[ans]);
         startActivity(test);
+
     }
 
     private void Calculator() {
